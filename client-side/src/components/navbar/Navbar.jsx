@@ -27,10 +27,12 @@ const Navbar = () => {
     <>
       <div
         name="navbar-container-bigScreen"
-        className=" bg-yellow-400  flex justify-around items-center gap-48 py-6 w-screen"
+        className=" bg-yellow-400  max-w-2xl sm:max-w-6xl md:max-w-full flex justify-around items-center py-4 w-screen "
       >
         <div name="logo">
-          <h1 className="text-[#fb445b] font-Pacifico md:text-3xl">Logo</h1>
+          <h1 className="text-[#fb445b] font-Pacifico text-3xl md:text-3xl  ">
+            Logo
+          </h1>
         </div>
         <ul
           name="nav-links"
@@ -78,12 +80,12 @@ const Navbar = () => {
       {activeBurgerIcon ? (
         <div
           name="navbar-container-mobile"
-          className="md:hidden  bg-blue-400 h-screen flex flex-col justify-around items-center py-6  
+          className="md:hidden p-8 transition  bg-blue-400 h-auto flex flex-col justify-around items-center   
           "
         >
           <ul
             name="nav-links"
-            className="font-PlusJakartaSans font-[500] text-3xl flex flex-col items-center gap-10"
+            className="font-PlusJakartaSans font-[500] text-3xl flex flex-col items-center gap-10 "
           >
             {links.map((link, index) => (
               <Link
@@ -98,7 +100,11 @@ const Navbar = () => {
                 }}
                 onClick={() => handleLinkClick(index)}
               >
-                <li className={link.isActive ? "" : "underline-offset-8"}>
+                <li
+                  className={
+                    link.isActive ? "uppercase" : "underline-offset-8 uppercase"
+                  }
+                >
                   {link.text}
                 </li>
               </Link>
