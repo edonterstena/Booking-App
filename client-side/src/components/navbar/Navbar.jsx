@@ -27,7 +27,7 @@ const Navbar = () => {
     <>
       <div
         name="navbar-container-bigScreen"
-        className=" bg-yellow-400  max-w-2xl sm:max-w-6xl md:max-w-full flex justify-around items-center py-4 w-screen "
+        className=" bg-white  max-w-2xl sm:max-w-6xl md:max-w-full flex justify-around items-center py-4 w-screen "
       >
         <div name="logo">
           <h1 className="text-[#fb445b] font-Pacifico text-3xl md:text-3xl  ">
@@ -80,7 +80,7 @@ const Navbar = () => {
       {activeBurgerIcon ? (
         <div
           name="navbar-container-mobile"
-          className="md:hidden p-8 transition  bg-blue-400 h-auto flex flex-col justify-around items-center   
+          className="md:hidden p-8 transition text-white bg-black h-screen flex flex-col justify-around items-center   
           "
         >
           <ul
