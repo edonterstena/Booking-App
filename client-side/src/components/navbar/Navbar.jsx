@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { BiUser } from "react-icons/bi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GrClose } from "react-icons/gr";
-import { Link } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState(false);
   const [activeBurgerIcon, setActiveBurgerIcon] = useState(false);
+  const [userIconClicked, setUserIconClicked] = useState(false);
+
+  const { user, dispatch } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const links = [
-    { text: "Home", url: "#", isActive: activeLink === 0 },
+    { text: "Home", url: "/", isActive: activeLink === 0 },
     { text: "Rooms", url: "#", isActive: activeLink === 1 },
     { text: "Contact", url: "#", isActive: activeLink === 2 },
   ];
@@ -30,9 +36,7 @@ const Navbar = () => {
         className=" bg-white  max-w-2xl sm:max-w-6xl md:max-w-full flex justify-around items-center py-4 w-screen "
       >
         <div name="logo">
-          <h1 className="text-[#fb445b] font-Pacifico text-3xl md:text-3xl  ">
-            Logo
-          </h1>
+          <p className="font-Prata font-bold text-2xl">LOGO</p>
         </div>
         <ul
           name="nav-links"
@@ -43,7 +47,7 @@ const Navbar = () => {
               key={index}
               to={link.url}
               style={{
-                color: link.isActive ? "#fb445b" : "",
+                color: link.isActive ? "#5e90cb" : "",
                 textDecoration: link.isActive ? "underline" : "",
                 textUnderlineOffset: link.isActive ? "8px" : "",
                 transitionDuration: "0.3s",
@@ -60,7 +64,49 @@ const Navbar = () => {
         <div name="login-signup-darkmode" className="flex gap-8">
           <FaSun size={20} className="hidden" />
           <FaMoon size={20} />
-          <BiUser size={20} />
+          <BiUser
+            size={20}
+            onClick={() => setUserIconClicked(!userIconClicked)}
+            className="relative"
+          />
+
+          {userIconClicked && (
+            <div className="bg-black rounded text-white absolute top-14 right-[32px] p-2   font-semibold">
+              <ul className="flex flex-col gap-2 items-center">
+                {user ? (
+                  <>
+                    <li className="hover:bg-white rounded p-1 hover:text-black">
+                      User: {user.email}
+                    </li>
+                    <li
+                      onClick={() => {
+                        dispatch({ type: "LOGOUT" });
+                        navigate("/");
+                      }}
+                      className="hover:bg-white w-[100%] rounded p-1 hover:text-black"
+                    >
+                      Logout
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="w-full">
+                      <li className=" text-center rounded hover:bg-white hover:text-black">
+                        Login
+                      </li>
+                    </Link>
+                    <Link to="/register" className="w-full">
+                      <li className=" text-center rounded hover:bg-white hover:text-black">
+                        {" "}
+                        Register
+                      </li>
+                    </Link>
+                  </>
+                )}
+              </ul>
+            </div>
+          )}
+
           {activeBurgerIcon ? (
             <GrClose
               size={20}
@@ -92,7 +138,7 @@ const Navbar = () => {
                 key={index}
                 to={link.url}
                 style={{
-                  color: link.isActive ? "#fb445b" : "",
+                  color: link.isActive ? "#5e90cb" : "",
                   textDecoration: link.isActive ? "underline" : "",
                   textUnderlineOffset: link.isActive ? "8px" : "",
                   transitionDuration: "0.3s",

@@ -5,11 +5,11 @@ const Email = () => {
     <>
       <div
         name="email-container"
-        className="bg-white my-36 border border-gray-300 p-4"
+        className=" my-36  p-4 flex justify-center items-center"
       >
         <div
           name="email-content"
-          className="bg-white flex flex-col items-center p-4 gap-3 md:grid md:grid-rows-1 md:grid-cols-2  md:justify-items-center"
+          className="bg-white flex flex-col items-center p-4 gap-3 md:grid md:grid-rows-1 md:grid-cols-1 md:gap-8 lg:grid-cols-2  md:justify-items-center "
         >
           <div name="email-desc" className="flex flex-col gap-2">
             <p className="font-PlusJakartaSans text-3xl  font-semibold max-w-[200px] md:max-w-full md:text-4xl">
@@ -27,7 +27,7 @@ const Email = () => {
             />
             <button
               type="submit"
-              className="bg-[#fb445b] text-white font-medium p-2 rounded-full"
+              className="bg-black text-white font-medium p-2 rounded-full"
             >
               Subscribe
             </button>

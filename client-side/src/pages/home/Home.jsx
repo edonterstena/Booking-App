@@ -1,9 +1,12 @@
 import React from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import Featured from "../../components/featured/Featured";
+
 import Email from "../../components/emailFeature/Email";
 import Footer from "../../components/footer/Footer";
+import FeaturedProperties from "../../components/FeaturedProperties/FeaturedProperties";
+import Featured from "../../components/featured/Featured";
+import PropertyList from "../../components/propertyList/Propertylist";
 
 function Home() {
   return (
@@ -11,6 +14,8 @@ function Home() {
       <Navbar />
       <Header />
       <Featured />
+      <PropertyList />
+      <FeaturedProperties />
       <Email />
       <Footer />
     </div>

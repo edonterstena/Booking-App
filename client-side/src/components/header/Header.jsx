@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaBed } from "react-icons/fa";
 import { BsFillCalendarCheckFill } from "react-icons/Bs";
 import { VscPerson } from "react-icons/vsc";
@@ -8,10 +8,21 @@ import { DateRange } from "react-date-range";
 
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../../context/SearchContext";
 
-const Header = () => {
+const Header = ({ type }) => {
+  const [destination, setDestination] = useState("");
   const [openCalendar, setOpenCalendar] = useState(false);
   const [openGuest, setOpenGuest] = useState(false);
+
+  const [dates, setDates] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
 
   const [guests, setGuests] = useState({
     adult: 1,
@@ -28,18 +39,19 @@ const Header = () => {
     });
   };
 
-  const [date, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
+  const navigate = useNavigate();
+
+  const { dispatch } = useContext(SearchContext);
+  const handleSearch = () => {
+    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, guests } });
+    navigate("/hotels", { state: { destination, dates, guests } });
+  };
+
   return (
     <>
       <div
         name="header-container"
-        className="bg-[url('./img/header-image.jpg')]  m-4 p-1 rounded-2xl md:m-8 md:p-8 lg:flex lg:flex-col lg:gap-44"
+        className="bg-[url('./img/hotel-1.jpg')]  m-4 p-1 rounded-2xl md:m-8 md:p-8 lg:flex lg:flex-col lg:gap-44"
       >
         <div>
           <h1 className="text-white font-bold font-PlusJakartaSans text-4xl px-3 pt-8 lg:max-w-[500px] lg:text-6xl ">
@@ -66,6 +78,7 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Where are you going?"
+                onChange={(e) => setDestination(e.target.value)}
                 className="w-full placeholder-gray-400  bg-white border border-solid border-white-500 rounded-full transition-all duration-200 ease-in-out hover:shadow hover:shadow-gray-500 text-center lg:rounded-full lg:px-2 "
               ></input>
             </div>
@@ -85,8 +98,8 @@ const Header = () => {
                 onClick={() => setOpenCalendar(!openCalendar)}
                 className="w-full text-gray-400 bg-white border border-solid  transition-all duration-200 ease-in-out border-white-500 rounded-full hover:shadow hover:shadow-gray-500 text-center lg:rounded-full lg:px-2"
               >
-                {`${format(date[0].startDate, "MM/dd/yyyy")}  to ${format(
-                  date[0].endDate,
+                {`${format(dates[0].startDate, "MM/dd/yyyy")}  to ${format(
+                  dates[0].endDate,
                   "MM/dd/yyyy"
                 )}
                 `}
@@ -99,10 +112,10 @@ const Header = () => {
                   <DateRange
                     editableDateInputs={true}
                     onChange={(item) => {
-                      setDate([item.selection]);
+                      setDates([item.selection]);
                     }}
                     moveRangeOnFirstSelection={false}
-                    ranges={date}
+                    ranges={dates}
                     className="date bg-white border border-gray-300 rounded-md shadow-black shadow-lg  sm:text-[12px] absolute"
                   />
                   {/* <div
@@ -214,7 +227,10 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <button className="bg-[#fb445b] w-[100%] rounded p-4 text-white text-xl font-semibold lg:rounded-full lg:w-52 ">
+            <button
+              onClick={handleSearch}
+              className="bg-black w-[100%] rounded p-4 text-white text-xl font-semibold lg:rounded-full lg:w-52 "
+            >
               Search
             </button>
           </div>

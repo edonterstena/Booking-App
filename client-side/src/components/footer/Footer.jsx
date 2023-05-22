@@ -10,7 +10,7 @@ function Footer() {
       <div name="footer-container" className="bg-gray-200 w-full p-4 pt-24">
         <div
           name="footer-section"
-          className="grid grid-cols-1 gap-8 sm:grid sm:grid-cols-4 justify-items-center"
+          className="grid grid-cols-2 p-4 gap-8 sm:grid sm:grid-cols-4 justify-items-start lg:justify-items-center"
         >
           <div name="footer-item" className=" flex flex-col gap-4 ">
             <p className="font-PlusJakartaSans font-bold text-xl">About</p>
