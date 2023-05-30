@@ -6,16 +6,17 @@ const createError = require("../utils/error");
 
 const register = async (req, res, next) => {
   try {
+    console.log(req.body.password);
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
-
+    console.log(hash);
     const newUser = new User({
-      username: req.body.username,
-      email: req.body.email,
+      ...req.body,
       password: hash,
     });
 
     await newUser.save();
+
     res.status(200).send("User has been created");
   } catch (err) {
     next(err);
@@ -45,7 +46,7 @@ const login = async (req, res, next) => {
         httpOnly: true,
       })
       .status(200)
-      .json({ ...otherDetails });
+      .json({ details: { ...otherDetails }, isAdmin });
   } catch (err) {
     next(err);
   }
