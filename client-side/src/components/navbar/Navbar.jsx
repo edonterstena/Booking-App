@@ -73,6 +73,11 @@ const Navbar = () => {
           {userIconClicked && (
             <div className="bg-black rounded text-white absolute top-14 right-[32px] p-2   font-semibold">
               <ul className="flex flex-col gap-2 items-center">
+                <Link to="http://localhost:5000/" className="w-full">
+                  <li className="hover:bg-white rounded p-1 hover:text-black">
+                    Go to Admin
+                  </li>
+                </Link>
                 {user ? (
                   <>
                     <li className="hover:bg-white rounded p-1 hover:text-black">
