@@ -11,6 +11,10 @@ import { AuthContext } from "./context/AuthContext";
 import CreateHotel from "./pages/hotel/CreateHotel";
 import EditHotel from "./pages/hotel/EditHotel";
 import HotelDetails from "./pages/hotel/HotelDetails";
+import CreateRoom from "./pages/room/CreateRoom";
+import EditRoom from "./pages/room/EditRoom";
+import EditUser from "./pages/user/EditUser";
+import CreateUser from "./pages/user/CreateUser";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -101,10 +105,42 @@ function ProtectedLayout() {
             }
           />
           <Route
+            path="/createRoom"
+            element={
+              <ProtectedRoute>
+                <CreateRoom />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/editRoom/:id"
+            element={
+              <ProtectedRoute>
+                <EditRoom />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/users"
             element={
               <ProtectedRoute>
                 <UserPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/createUser"
+            element={
+              <ProtectedRoute>
+                <CreateUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/editUser/:id"
+            element={
+              <ProtectedRoute>
+                <EditUser />
               </ProtectedRoute>
             }
           />

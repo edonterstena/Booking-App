@@ -52,7 +52,7 @@ const Login = () => {
             <p className="">
               Don't have an account?{" "}
               <a
-                href="javascript:void(0)"
+                href="/register"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
                 Sign up
@@ -89,7 +89,7 @@ const Login = () => {
           </button>
           {error && <span>{error.message}</span>}
           <div className="text-center">
-            <a href="javascript:void(0)" className="hover:text-indigo-600">
+            <a href="/forgot-password" className="hover:text-indigo-600">
               Forgot password?
             </a>
           </div>

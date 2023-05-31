@@ -273,7 +273,7 @@ const EditHotel = () => {
           <div>
             <label
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              for="multiple_files"
+              htmlFor="multiple_files"
             >
               Upload multiple files
             </label>

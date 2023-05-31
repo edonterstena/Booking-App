@@ -91,13 +91,13 @@ const HotelPage = () => {
                       {item.name}
                     </span>
                     <span className="block text-gray-700 text-xs">
-                      {item.type}
+                      Id: {item._id}
                     </span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">{item.address}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
-                <td className="px-6 py-4 whitespace-nowrap">$100k</td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
                 <td className="text-right px-6 whitespace-nowrap">
                   {/* <a
                     href={`/hotelDetails/${item._id}`}

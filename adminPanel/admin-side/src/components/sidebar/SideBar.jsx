@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import Dashboard from "../../pages/dashboard/Dashboard";
 import HotelPage from "../../pages/hotel/HotelPage";
+import { AuthContext } from "../../context/AuthContext";
 
 const Sidebar = () => {
   // const [hotelsPath, setHotelPath] = useState(false);
@@ -32,6 +33,8 @@ const Sidebar = () => {
   //     setUsersPath(false);
   //   }
   // }, [path]);
+
+  const { dispatch } = useContext(AuthContext);
   const navigation = [
     {
       href: "/",
@@ -162,8 +165,7 @@ const Sidebar = () => {
       ),
     },
     {
-      href: "/",
-      name: "Logout",
+      name: <div onClick={() => dispatch({ type: "LOGOUT" })}>Logout</div>,
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -234,7 +236,7 @@ const Sidebar = () => {
                       Alivika tony
                     </span>
                     <a
-                      href="javascript:void(0)"
+                      href="/"
                       className="block mt-px text-gray-600 hover:text-indigo-600 text-xs"
                     >
                       View profile
