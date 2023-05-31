@@ -139,7 +139,10 @@ const Hotel = () => {
                   </p>
                   <p className="text-xl">({days} nights)</p>
                 </div>
-                <button className="bg-[#5e90cb] text-white p-2 rounded">
+                <button
+                  onClick={handleClick}
+                  className="bg-[#5e90cb] text-white p-2 rounded"
+                >
                   Reserve or Book Now!
                 </button>
               </div>
