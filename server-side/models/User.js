@@ -12,6 +12,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    lastname: {
+      type: String,
+      required: true,
+    },
     country: {
       type: String,
       required: true,
@@ -20,6 +28,10 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     city: {
+      type: String,
+      required: true,
+    },
+    address: {
       type: String,
       required: true,
     },

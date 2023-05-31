@@ -27,6 +27,7 @@ const updateRoom = async (req, res, next) => {
       { $set: req.body },
       { new: true }
     );
+
     res.status(200).json(updatedRoom);
   } catch (err) {
     next(err);
