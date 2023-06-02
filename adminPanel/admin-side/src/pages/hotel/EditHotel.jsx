@@ -5,7 +5,7 @@ import useFetch from "../../hooks/useFetch";
 const EditHotel = () => {
   const [files, setFiles] = useState("");
   const [name, setName] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("Select Type of Hotel");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [title, setTitle] = useState("");
@@ -26,6 +26,13 @@ const EditHotel = () => {
   );
 
   const {
+    data: hotelTypes,
+    loading: loadingTypes,
+    error: errorTypes,
+  } = useFetch("http://localhost:8800/api/v1/hotels/countByType");
+  console.log(hotelTypes);
+
+  const {
     data: hotelData,
     loading: hotelLoading,
     error: hotelError,
@@ -44,6 +51,12 @@ const EditHotel = () => {
       setFeatured(hotelData.featured);
       setRooms(hotelData.rooms);
 
+      if (hotelTypes && hotelTypes.some((t) => t.type === hotelData.type)) {
+        setType(hotelData.type);
+      } else {
+        setType("");
+      }
+
       if (hotelData.photos && hotelData.photos.length > 0) {
         setFiles(hotelData.photos);
         setHotelImage(hotelData.photos[0]);
@@ -52,7 +65,7 @@ const EditHotel = () => {
         setHotelImage("");
       }
     }
-  }, [hotelLoading, hotelData]);
+  }, [hotelLoading, hotelData, hotelTypes]);
 
   const handleSelect = (e) => {
     const value = Array.from(
@@ -111,13 +124,13 @@ const EditHotel = () => {
     <>
       {" "}
       <div>
-        <h1 className="text-4xl font-semibold font-sans uppercase mb-20 text-gray-900">
+        <h1 className="text-4xl flex justify-center font-semibold font-sans uppercase mb-20 text-gray-900">
           Edit Hotel
         </h1>
       </div>
-      <div className="flex gap-20">
+      <div className="flex justify-center gap-20">
         <div className="">
-          <form className="grid grid-cols-2 gap-4 items-center  ">
+          <form className="grid grid-cols-2 gap-4  justify-center ">
             <div>
               <label>Name</label>
               <input
@@ -138,15 +151,37 @@ const EditHotel = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div>
-              <label>Type</label>
-              <input
-                type="text"
-                placeholder="type"
-                value={type}
-                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border border-black focus:border-indigo-600 shadow-sm rounded-lg"
+            <div name="select Types" className="relative self-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="absolute top-11  w-6 h-6 my-auto text-gray-400 right-2.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <label>Select Type of Hotel</label>
+              <select
                 onChange={(e) => setType(e.target.value)}
-              />
+                defaultValue=""
+                className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+              >
+                <option disabled>Select one</option>
+                {loading ? (
+                  <option>Loading...</option>
+                ) : (
+                  hotelTypes &&
+                  hotelTypes.map((t) => (
+                    <option key={t.type} value={t.type}>
+                      {t.type}
+                    </option>
+                  ))
+                )}
+              </select>
             </div>
             <div>
               <label>City</label>
@@ -199,7 +234,7 @@ const EditHotel = () => {
               />
             </div>
 
-            <div className="relative  ">
+            <div className="relative  self-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute top-11  align-center w-6 h-6 my-auto text-gray-400 right-2.5"
@@ -213,13 +248,12 @@ const EditHotel = () => {
                 />
               </svg>
               <label>Featured</label>
-              <select className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600">
-                <option value={false} onChange={(e) => setFeatured(value)}>
-                  No
-                </option>
-                <option value={true} onChange={(e) => setFeatured(value)}>
-                  Yes
-                </option>
+              <select
+                onChange={(e) => setFeatured(e.target.value === "true")}
+                className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+              >
+                <option value={false}>No</option>
+                <option value={true}>Yes</option>
               </select>
             </div>
             <div name="selectRooms" className="relative">
@@ -256,7 +290,7 @@ const EditHotel = () => {
               onClick={handleClick}
               className="px-6 py-3 self-end text-white bg-indigo-600 rounded-lg duration-150 hover:bg-indigo-700 active:shadow-lg"
             >
-              Create
+              Edit
             </button>
           </form>
         </div>

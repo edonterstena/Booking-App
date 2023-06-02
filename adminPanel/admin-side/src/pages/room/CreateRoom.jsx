@@ -15,6 +15,7 @@ const CreateRoom = () => {
   const { data, loading, error } = useFetch(
     "http://localhost:8800/api/v1/hotels"
   );
+  console.log(data);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -46,11 +47,11 @@ const CreateRoom = () => {
     <>
       {" "}
       <div>
-        <h1 className="text-4xl font-semibold font-sans uppercase mb-20 text-gray-900">
+        <h1 className="text-4xl flex justify-center font-semibold font-sans uppercase mb-20 text-gray-900">
           Add a new Room
         </h1>
       </div>
-      <div className="flex gap-20">
+      <div className="flex justify-center gap-20">
         <div className="">
           <form className="grid grid-cols-2 gap-4 items-center  ">
             <div>
@@ -119,16 +120,22 @@ const CreateRoom = () => {
               <label>Choose a Hotel</label>
               <select
                 onChange={(e) => setHotelId(e.target.value)}
+                defaultValue="Choose a hotel"
                 className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
               >
-                {loading
-                  ? "loading"
-                  : data &&
-                    data.map((hotel) => (
-                      <option key={hotel._id} value={hotel._id}>
-                        {hotel.name}
-                      </option>
-                    ))}
+                <option default disabled="true">
+                  Select one
+                </option>
+                {loading ? (
+                  <option>Loading...</option>
+                ) : (
+                  data &&
+                  data.map((hotel) => (
+                    <option key={hotel._id} value={hotel._id}>
+                      {hotel.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
 

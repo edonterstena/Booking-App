@@ -87,11 +87,11 @@ const EditRoom = () => {
     <>
       {" "}
       <div>
-        <h1 className="text-4xl font-semibold font-sans uppercase mb-20 text-gray-900">
+        <h1 className="text-4xl flex justify-center font-semibold font-sans uppercase mb-20 text-gray-900">
           Edit Room
         </h1>
       </div>
-      <div className="flex gap-20 ">
+      <div className="flex justify-center gap-20 ">
         <div className="">
           <form className="grid grid-cols-2 gap-4 items-center  ">
             <div>

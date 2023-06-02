@@ -71,6 +71,7 @@ const HotelPage = () => {
               <th className="py-3 px-6">Title</th>
               <th className="py-3 px-6">City</th>
               <th className="py-3 px-6">Address</th>
+              <th className="py-3 px-6">Featured</th>
 
               <th className="py-3 px-6"></th>
             </tr>
@@ -95,9 +96,14 @@ const HotelPage = () => {
                     </span>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.address}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.address}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {item.featured.toString()}
+                </td>
+
                 <td className="text-right px-6 whitespace-nowrap">
                   {/* <a
                     href={`/hotelDetails/${item._id}`}

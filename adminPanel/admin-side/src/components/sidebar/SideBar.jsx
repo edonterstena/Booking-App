@@ -4,8 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import HotelPage from "../../pages/hotel/HotelPage";
 import { AuthContext } from "../../context/AuthContext";
+import useFetch from "../../hooks/useFetch";
 
 const Sidebar = () => {
+  const [isCurrentUser, setIsCurrentUser] = useState(false);
+  const [userImg, setUserImg] = useState("");
+  const [userName, setUsername] = useState("");
   // const [hotelsPath, setHotelPath] = useState(false);
   // const [roomsPath, setRoomPath] = useState(false);
   // const [usersPath, setUsersPath] = useState(false);
@@ -14,27 +18,33 @@ const Sidebar = () => {
   // console.log(location.pathname.split("/")[1]);
   // const path = location.pathname.split("/")[1];
 
-  // useEffect(() => {
-  //   if (path === "hotels") {
-  //     setHotelPath(true);
-  //     setRoomPath(false);
-  //     setUsersPath(false);
-  //   } else if (path === "rooms") {
-  //     setHotelPath(false);
-  //     setRoomPath(true);
-  //     setUsersPath(false);
-  //   } else if (path === "users") {
-  //     setHotelPath(false);
-  //     setRoomPath(false);
-  //     setUsersPath(true);
-  //   } else {
-  //     setHotelPath(false);
-  //     setRoomPath(false);
-  //     setUsersPath(false);
-  //   }
-  // }, [path]);
-
   const { dispatch } = useContext(AuthContext);
+
+  const { data, loading, error } = useFetch(
+    "http://localhost:8800/api/v1/users",
+    {
+      withCredentials: true,
+    }
+  );
+
+  const userString = localStorage.getItem("user");
+  const user = JSON.parse(userString);
+
+  const userId = user?._id;
+
+  const isIdMatch = data.some((item) => item._id === userId);
+
+  console.log(isIdMatch);
+
+  useEffect(() => {
+    const isIdMatch = data.some((item) => item._id === userId);
+    setIsCurrentUser(isIdMatch);
+    if (isIdMatch) {
+      setUserImg(user.img);
+      setUsername(user.name);
+    }
+  }, [data, userId]);
+
   const navigation = [
     {
       href: "/",
@@ -187,9 +197,9 @@ const Sidebar = () => {
 
   return (
     <>
-      <nav className=" h-screen border-r bg-gray-700 space-y-8 sm:w-80 ">
+      <nav className=" h-screen border-r bg-gray-700 space-y-8 w-80">
         <div className="flex flex-col h-full">
-          <div className="h-20 flex items-center px-8">
+          <div className="h-20 flex items-center px-8 ">
             <a
               href="/"
               className="flex-none text-white font-PlusJakartaSans font-bold text-2xl"
@@ -226,23 +236,22 @@ const Sidebar = () => {
                 ))}
               </ul>
               <div className="py-4 px-4 border-t">
-                <div className="flex items-center gap-x-4">
-                  <img
-                    src="https://randomuser.me/api/portraits/women/79.jpg"
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <div>
-                    <span className="block text-gray-700 text-sm font-semibold">
-                      Alivika tony
-                    </span>
-                    <a
-                      href="/"
-                      className="block mt-px text-gray-600 hover:text-indigo-600 text-xs"
-                    >
-                      View profile
-                    </a>
+                {isCurrentUser && (
+                  <div className="flex items-center gap-x-4">
+                    <img src={userImg} className="w-12 h-12 rounded-full" />
+                    <div>
+                      <span className="block text-white text-sm font-semibold">
+                        {userName}
+                      </span>
+                      <a
+                        href="/"
+                        className="block mt-px text-gray-300 hover:text-indigo-600 text-xs"
+                      >
+                        View profile
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

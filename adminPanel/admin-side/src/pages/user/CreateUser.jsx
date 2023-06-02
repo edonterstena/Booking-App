@@ -66,13 +66,13 @@ const CreateHotel = () => {
     <>
       {" "}
       <div>
-        <h1 className="text-4xl font-semibold font-sans uppercase mb-20 text-gray-900">
+        <h1 className="text-4xl text-center font-semibold font-sans uppercase mb-20 text-gray-900">
           Add a new user
         </h1>
       </div>
-      <div className="flex gap-20">
+      <div className="flex justify-center gap-20">
         <div className="">
-          <form className="grid grid-cols-2 gap-4 items-center  ">
+          <form className="grid grid-cols-2 gap-4 items-center ">
             <div>
               <label>Name</label>
               <input
@@ -170,13 +170,12 @@ const CreateHotel = () => {
                 />
               </svg>
               <label>Admin</label>
-              <select className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600">
-                <option value={false} onChange={(e) => setIsAdmin(value)}>
-                  No
-                </option>
-                <option value={true} onChange={(e) => setIsAdmin(value)}>
-                  Yes
-                </option>
+              <select
+                onChange={(e) => setIsAdmin(e.target.value === "true")}
+                className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+              >
+                <option value={false}>No</option>
+                <option value={true}>Yes</option>
               </select>
             </div>
             {/* <div name="selectRooms" className="relative">

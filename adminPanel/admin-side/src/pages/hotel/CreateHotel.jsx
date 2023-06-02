@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 const CreateHotel = () => {
@@ -20,6 +20,13 @@ const CreateHotel = () => {
   const { data, loading, error } = useFetch(
     "http://localhost:8800/api/v1/rooms"
   );
+
+  const {
+    data: hotelTypes,
+    loading: loadingTypes,
+    error: errorTypes,
+  } = useFetch("http://localhost:8800/api/v1/hotels/countByType");
+  console.log(hotelTypes);
 
   const handleSelect = (e) => {
     const value = Array.from(
@@ -74,11 +81,11 @@ const CreateHotel = () => {
     <>
       {" "}
       <div>
-        <h1 className="text-4xl font-semibold font-sans uppercase mb-20 text-gray-900">
+        <h1 className="text-4xl flex justify-center font-semibold font-sans uppercase mb-20 text-gray-900">
           Add a new hotel
         </h1>
       </div>
-      <div className="flex gap-20">
+      <div className="flex gap-20 justify-center">
         <div className="">
           <form className="grid grid-cols-2 gap-4 items-center  ">
             <div>
@@ -94,19 +101,43 @@ const CreateHotel = () => {
               <label>Title</label>
               <input
                 type="text"
-                placeholder="distance"
+                placeholder="title"
                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border border-black focus:border-indigo-600 shadow-sm rounded-lg"
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div>
-              <label>Type</label>
-              <input
-                type="text"
-                placeholder="type"
-                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border border-black focus:border-indigo-600 shadow-sm rounded-lg"
+            <div name="select Types" className="relative self-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="absolute top-11  w-6 h-6 my-auto text-gray-400 right-2.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <label>Select Type of Hotel</label>
+              <select
                 onChange={(e) => setType(e.target.value)}
-              />
+                className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+              >
+                <option default disabled>
+                  Select one
+                </option>
+                {loading ? (
+                  <option>Loading...</option>
+                ) : (
+                  hotelTypes &&
+                  hotelTypes.map((t) => (
+                    <option key={t.type} value={t.type}>
+                      {t.type}
+                    </option>
+                  ))
+                )}
+              </select>
             </div>
             <div>
               <label>City</label>
@@ -154,7 +185,7 @@ const CreateHotel = () => {
               />
             </div>
 
-            <div className="relative  ">
+            <div className="relative  self-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute top-11  align-center w-6 h-6 my-auto text-gray-400 right-2.5"
@@ -168,13 +199,12 @@ const CreateHotel = () => {
                 />
               </svg>
               <label>Featured</label>
-              <select className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600">
-                <option value={false} onChange={(e) => setFeatured(value)}>
-                  No
-                </option>
-                <option value={true} onChange={(e) => setFeatured(value)}>
-                  Yes
-                </option>
+              <select
+                onChange={(e) => setFeatured(e.target.value === "true")}
+                className="w-full p-2.5 mt-2 text-gray-500 bg-white border border-black rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+              >
+                <option value={false}>No</option>
+                <option value={true}>Yes</option>
               </select>
             </div>
             <div name="selectRooms" className="relative">
@@ -229,7 +259,7 @@ const CreateHotel = () => {
           <div>
             <label
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              for="multiple_files"
+              htmlFor="multiple_files"
             >
               Upload multiple files
             </label>

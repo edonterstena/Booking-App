@@ -51,102 +51,103 @@ function LoginLayout() {
 
 function ProtectedLayout() {
   return (
-    <div className="flex items-center gap-24">
-      <SideBar />
-      <div>
-        <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/hotels"
-            element={
-              <ProtectedRoute>
-                <HotelPage />
-              </ProtectedRoute>
-            }
-          />{" "}
-          <Route
-            path="/createHotel"
-            element={
-              <ProtectedRoute>
-                <CreateHotel />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/editHotel/:id"
-            element={
-              <ProtectedRoute>
-                <EditHotel />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/hotelDetails/:id"
-            element={
-              <ProtectedRoute>
-                <HotelDetails />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/rooms"
-            element={
-              <ProtectedRoute>
-                <RoomPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/createRoom"
-            element={
-              <ProtectedRoute>
-                <CreateRoom />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/editRoom/:id"
-            element={
-              <ProtectedRoute>
-                <EditRoom />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/users"
-            element={
-              <ProtectedRoute>
-                <UserPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/createUser"
-            element={
-              <ProtectedRoute>
-                <CreateUser />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/editUser/:id"
-            element={
-              <ProtectedRoute>
-                <EditUser />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+    <>
+      <div className="flex items-center ">
+        <SideBar />
+        <div className="w-screen">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hotels"
+              element={
+                <ProtectedRoute>
+                  <HotelPage />
+                </ProtectedRoute>
+              }
+            />{" "}
+            <Route
+              path="/createHotel"
+              element={
+                <ProtectedRoute>
+                  <CreateHotel />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editHotel/:id"
+              element={
+                <ProtectedRoute>
+                  <EditHotel />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hotelDetails/:id"
+              element={
+                <ProtectedRoute>
+                  <HotelDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/rooms"
+              element={
+                <ProtectedRoute>
+                  <RoomPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/createRoom"
+              element={
+                <ProtectedRoute>
+                  <CreateRoom />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editRoom/:id"
+              element={
+                <ProtectedRoute>
+                  <EditRoom />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <UserPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/createUser"
+              element={
+                <ProtectedRoute>
+                  <CreateUser />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editUser/:id"
+              element={
+                <ProtectedRoute>
+                  <EditUser />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
