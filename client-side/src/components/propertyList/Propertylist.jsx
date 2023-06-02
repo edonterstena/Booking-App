@@ -22,7 +22,7 @@ function PropertyList() {
           name="featured-container-title"
           className="text-center font-PlusJakartaSans font-bold p-4 text-2xl sm:text-4xl sm:text-start"
         >
-          Perfect holiday deals
+          Property List
         </p>
         {loading ? (
           "loading"
