@@ -58,15 +58,40 @@ const getAllHotels = async (req, res, next) => {
   }
 };
 
+// const countByCity = async (req, res, next) => {
+//   const cities = req.query.cities.split(",");
+//   try {
+//     const list = await Promise.all(
+//       cities.map(async (city) => {
+//         const count = await Hotel.countDocuments({ city: city });
+//         return { city, count };
+//       })
+//     );
+//     res.status(200).json(list);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 const countByCity = async (req, res, next) => {
   const cities = req.query.cities.split(",");
   try {
     const list = await Promise.all(
-      cities.map((city) => {
-        return Hotel.countDocuments({ city: city });
+      cities.map(async (city) => {
+        const count = await Hotel.countDocuments({ city: city });
+        return { city, count };
       })
     );
     res.status(200).json(list);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const hotelCities = async (req, res, next) => {
+  try {
+    const hotelCities = await Hotel.find({}, { city: 1, _id: 0 });
+    res.status(200).json(hotelCities);
   } catch (err) {
     next(err);
   }
@@ -83,8 +108,8 @@ const countByType = async (req, res, next) => {
     { type: "hotel", count: hotelCount },
     { type: "apartment", count: apartmentCount },
     { type: "resort", count: resortCount },
-    { type: "villas", count: villaCount },
-    { type: "cabins", count: cabinCount },
+    { type: "villa", count: villaCount },
+    { type: "cabin", count: cabinCount },
   ]);
 };
 
@@ -111,4 +136,5 @@ module.exports = {
   countByCity,
   countByType,
   getHotelRooms,
+  hotelCities,
 };
