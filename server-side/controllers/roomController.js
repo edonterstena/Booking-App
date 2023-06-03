@@ -3,6 +3,7 @@ const Room = require("../models/Room");
 
 const createRoom = async (req, res, next) => {
   const hotelId = req.params.hotelid;
+  req.body.createdBy = req.user.id;
   const newRoom = new Room(req.body);
 
   try {
@@ -53,7 +54,15 @@ const deleteRoom = async (req, res, next) => {
 
 const getRoom = async (req, res, next) => {
   try {
-    const room = await Room.findById(req.params.id);
+    const room = await Room.findById(req.params.id)
+      .populate({
+        path: "createdBy",
+        select: "name lastname",
+      })
+      .populate({
+        path: "reservedBy",
+        select: "name lastname",
+      });
     res.status(200).json(room);
   } catch (err) {
     next(err);
@@ -62,7 +71,15 @@ const getRoom = async (req, res, next) => {
 
 const getAllRooms = async (req, res, next) => {
   try {
-    const rooms = await Room.find();
+    const rooms = await Room.find()
+      .populate({
+        path: "createdBy",
+        select: "name lastname",
+      })
+      .populate({
+        path: "reservedBy",
+        select: "name lastname",
+      });
     res.status(200).json(rooms);
   } catch (err) {
     next(err);
@@ -70,6 +87,8 @@ const getAllRooms = async (req, res, next) => {
 };
 
 const updateRoomAvailability = async (req, res, next) => {
+  req.body.reservedBy = req.user.id;
+
   try {
     await Room.updateOne(
       { "roomNumbers._id": req.params.id },
@@ -77,6 +96,7 @@ const updateRoomAvailability = async (req, res, next) => {
         $push: {
           "roomNumbers.$.unavailableDates": req.body.dates,
         },
+        reservedBy: req.body.reservedBy,
       }
     );
     res.status(200).json("Room status has been updated.");
@@ -84,6 +104,7 @@ const updateRoomAvailability = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports = {
   createRoom,
   updateRoom,

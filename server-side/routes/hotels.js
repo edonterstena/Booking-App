@@ -12,6 +12,8 @@ const {
   getHotelRooms,
   hotelCities,
 } = require("../controllers/hotelController");
+
+const { getSingleHotelReviews } = require("../controllers/reviewController");
 const { verifyAdmin } = require("../utils/verify");
 
 const router = express.Router();
@@ -35,5 +37,7 @@ router.get("/hotelCities", hotelCities);
 router.get("/countByCity", countByCity);
 router.get("/countByType", countByType);
 router.get("/room/:id", getHotelRooms);
+
+router.get("/:id/reviews", getSingleHotelReviews);
 
 module.exports = router;

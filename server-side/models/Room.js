@@ -18,6 +18,17 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reservedBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: false,
+    },
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
   },
   { timestamps: true }

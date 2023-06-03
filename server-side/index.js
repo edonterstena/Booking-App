@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const hotelsRoute = require("./routes/hotels");
 const roomsRoute = require("./routes/rooms");
+const reviewsRoute = require("./routes/reviews");
 const users = require("./routes/users");
 
 const app = express();
@@ -41,6 +42,7 @@ app.use(
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/hotels", hotelsRoute);
+app.use("/api/v1/reviews", reviewsRoute);
 app.use("/api/v1/rooms", roomsRoute);
 app.use("/api/v1/users", users);
 

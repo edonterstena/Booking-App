@@ -34,7 +34,10 @@ const deleteUser = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate({
+      path: "reservedRooms",
+      select: "title",
+    });
     if (!user) return next(createError(404, "User does not exists"));
     res.status(200).json(user);
   } catch (err) {
@@ -44,7 +47,10 @@ const getUser = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().populate({
+      path: "reservedRooms",
+      select: "title",
+    });
     res.status(200).json(users);
   } catch (err) {
     next(err);
