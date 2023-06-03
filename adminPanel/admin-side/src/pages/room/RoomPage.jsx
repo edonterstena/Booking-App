@@ -20,6 +20,8 @@ const RoomPage = () => {
     "http://localhost:8800/api/v1/rooms",
     { withCredentials: true }
   );
+
+  console.log(data);
   const { data: hotelsData } = useFetch("http://localhost:8800/api/v1/hotels", {
     withCredentials: true,
   });
