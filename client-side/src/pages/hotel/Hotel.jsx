@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
+import Comment from "../../components/comment/Comment";
+import Rating from "../../components/rating/Rating";
 
 const Hotel = () => {
   const location = useLocation();
@@ -122,9 +124,10 @@ const Hotel = () => {
                 <h1 className="text-3xl font-semibold">{data.title}</h1>
                 <p className="text-justify">{data.description}</p>
               </div>
+
               <div
                 name="reserve-price"
-                className="flex flex-col gap-6  rounded-lg p-5 border border-[#5e90cb] shadow-black shadow-lg sm:w-[450px] lg:w-fit sm:self-center"
+                className="flex flex-col gap-6 rounded-lg p-5 border border-[#5e90cb] shadow-black shadow-lg sm:w-[450px] lg:w-fit sm:self-center"
               >
                 <p className="text-2xl font-semibold">
                   Perfect for a {days}-night stay!
@@ -147,9 +150,16 @@ const Hotel = () => {
                 </button>
               </div>
             </div>
+            <div className="">
+              <Rating />
+            </div>
+            <div className="flex justify-start ">
+              <Comment />
+            </div>
           </div>
         </div>
       )}
+
       <Email />
       <Footer />
 
