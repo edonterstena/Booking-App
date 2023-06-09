@@ -3,33 +3,33 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 const CreateRoom = () => {
-  const [hotelId, setHotelId] = useState(undefined);
+  // const [hotelId, setHotelId] = useState(undefined);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  // const [hotel, setHotel] = useState(undefined);
   const [maxPeople, setMaxPeople] = useState("");
   const [rooms, setRooms] = useState([]);
 
   const navigate = useNavigate();
 
-  const { data, loading, error } = useFetch(
-    "http://localhost:8800/api/v1/hotels"
-  );
-  console.log(data);
+  // const { data, loading, error } = useFetch(
+  //   "http://localhost:8800/api/v1/hotels"
+  // );
+  // console.log(data);
 
   const handleClick = async (e) => {
     e.preventDefault();
     const roomNumbers = rooms.split(",").map((room) => ({ number: room }));
     try {
       await axios.post(
-        `http://localhost:8800/api/v1/rooms/${hotelId}`,
+        `http://localhost:8800/api/v1/rooms`,
 
-        { hotelId, title, description, price, maxPeople, roomNumbers },
+        { title, description, price, maxPeople, roomNumbers },
         { withCredentials: true }
       );
       navigate("/rooms");
       const creds = {
-        hotelId,
         title,
         description,
         price,
@@ -104,7 +104,7 @@ const CreateRoom = () => {
               ></textarea>
             </div>
 
-            <div name="selectRooms" className="relative self-start">
+            {/* <div name="selectRooms" className="relative self-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute top-11  w-6 h-6 my-auto text-gray-400 right-2.5"
@@ -137,7 +137,7 @@ const CreateRoom = () => {
                   ))
                 )}
               </select>
-            </div>
+            </div> */}
 
             <button
               onClick={handleClick}

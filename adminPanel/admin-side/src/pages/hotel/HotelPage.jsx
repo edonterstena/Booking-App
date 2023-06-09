@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import { Oval } from "react-loader-spinner";
 import { CSVLink, CSVDownload } from "react-csv";
 import axios from "axios";
 const HotelPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const { data, loading, error, reFetch } = useFetch(
@@ -13,14 +15,31 @@ const HotelPage = () => {
     { withCredentials: true }
   );
 
+  const [isLoading, setIsLoading] = useState(loading);
+
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  const filteredData = data.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.featured.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   const handleDelete = async (id) => {
@@ -34,8 +53,18 @@ const HotelPage = () => {
     }
   };
 
+  useEffect(() => {
+    setIsLoading(loading);
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
+
   return (
-    <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+    <div className="max-w-screen-lg mx-auto px-4 md:px-8">
       <div className="items-start justify-between md:flex">
         <div className="max-w-lg">
           <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
@@ -62,72 +91,99 @@ const HotelPage = () => {
           </a>
         </div>
       </div>
-      <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
-        <table className="w-full table-auto text-sm text-left">
-          <thead className="bg-gray-50 text-gray-600 font-medium border-b">
-            <tr>
-              <th className="py-3 px-6">Name</th>
-              <th className="py-3 px-6">Type</th>
-              <th className="py-3 px-6">Title</th>
-              <th className="py-3 px-6">City</th>
-              <th className="py-3 px-6">Address</th>
-              <th className="py-3 px-6">Featured</th>
+      <div className="mt-12 shadow-sm border border-gray-700  bg-gray-900 p-4 rounded-lg  overflow-x-auto">
+        <div className="flex items-center justify-end px-6 py-4">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
+            className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-80">
+            <Oval
+              height={80}
+              width={80}
+              color="green"
+              visible={true}
+              ariaLabel="oval-loading"
+              secondaryColor="
+                #4f46e5"
+              strokeWidth={4}
+              strokeWidthSecondary={2}
+            />
+          </div>
+        ) : (
+          <table className="w-full table-auto border-gray-700 bg-gray-900 text-sm text-left">
+            <thead className="bg-gray-50 text-gray-600 font-medium border-b">
+              <tr>
+                <th className="py-3 px-6">Name</th>
+                <th className="py-3 px-6">Type</th>
+                <th className="py-3 px-6">Title</th>
+                <th className="py-3 px-6">City</th>
+                <th className="py-3 px-6">Address</th>
+                <th className="py-3 px-6">Featured</th>
 
-              <th className="py-3 px-6"></th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 divide-y">
-            {currentItems.map((item) => (
-              <tr key={item._id}>
-                <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                  <img
-                    src={
-                      item.photos[0] ||
-                      "https://images.pexels.com/photos/4321802/pexels-photo-4321802.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    }
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div>
-                    <span className="block text-gray-700 text-sm font-medium">
-                      {item.name}
-                    </span>
-                    <span className="block text-gray-700 text-xs">
-                      Id: {item._id}
-                    </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{item.address}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {item.featured.toString()}
-                </td>
+                <th className="py-3 px-6"></th>
+              </tr>
+            </thead>
+            <tbody className="text-white divide-y">
+              {currentItems.map((item) => (
+                <tr key={item._id}>
+                  <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
+                    <img
+                      src={
+                        item.photos[0] ||
+                        "https://images.pexels.com/photos/4321802/pexels-photo-4321802.jpeg?auto=compress&cs=tinysrgb&w=600"
+                      }
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div>
+                      <span className="block text-white text-sm font-medium">
+                        {item.name}
+                      </span>
+                      <span className="block text-white text-xs">
+                        Id: {item._id}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.address}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.featured.toString()}
+                  </td>
 
-                <td className="text-right px-6 whitespace-nowrap">
-                  {/* <a
+                  <td className="text-right px-6 whitespace-nowrap">
+                    {/* <a
                     href={`/hotelDetails/${item._id}`}
                     className="py-2 px-3 font-medium text-yellow-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
                   >
                     View
                   </a> */}
-                  <a
-                    href={`/editHotel/${item._id}`}
-                    className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                  >
-                    Edit
-                  </a>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <a
+                      href={`/editHotel/${item._id}`}
+                      className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                    >
+                      Edit
+                    </a>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
         {/* Pagination */}
 

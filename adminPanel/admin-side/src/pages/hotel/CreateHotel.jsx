@@ -14,6 +14,7 @@ const CreateHotel = () => {
   const [cheapestPrice, setCheapestPrice] = useState("");
   const [featured, setFeatured] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const navigate = useNavigate();
 
@@ -45,15 +46,29 @@ const CreateHotel = () => {
           const data = new FormData();
           data.append("file", file);
           data.append("upload_preset", "booking-app");
+
+          const progressConfig = {
+            onUploadProgress: (progressEvent) => {
+              const progress = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setUploadProgress(progress);
+            },
+          };
+
           const uploadRes = await axios.post(
             "https://api.cloudinary.com/v1_1/djidbl4je/upload",
 
-            data
+            data,
+            progressConfig
           );
           const { url } = uploadRes.data;
           return url;
         })
       );
+
+      setUploadProgress(0);
+
       const newHotel = {
         name,
         type,
@@ -270,6 +285,19 @@ const CreateHotel = () => {
               multiple
               onChange={(e) => setFiles(e.target.files)}
             />
+
+            {uploadProgress > 0 && uploadProgress < 100 && (
+              <div className="w-full h-4 bg-gray-200">
+                <div
+                  className="h-full bg-indigo-600"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+            )}
+
+            {uploadProgress === 100 && (
+              <p className="text-green-500">Successfully uploaded!</p>
+            )}
           </div>
         </div>
       </div>

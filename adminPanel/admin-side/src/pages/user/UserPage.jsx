@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { Oval } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { CSVLink, CSVDownload } from "react-csv";
@@ -9,14 +10,24 @@ const UserPage = () => {
   const [itemsPerPage] = useState(4);
   const [searchQuery, setSearchQuery] = useState("");
   const [state, setState] = useState(true);
-  const navigate = useNavigate();
-
-  const { dispatch } = useContext(AuthContext);
-
   const { data, loading, error, reFetch } = useFetch(
     "http://localhost:8800/api/v1/users",
     { withCredentials: true }
   );
+  const [isLoading, setIsLoading] = useState(loading);
+  const navigate = useNavigate();
+
+  const { dispatch } = useContext(AuthContext);
+
+  useEffect(() => {
+    setIsLoading(loading);
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -106,83 +117,101 @@ const UserPage = () => {
               className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
-          <table className="w-full table-auto text-sm text-left ">
-            <thead className="bg-gray-50 text-gray-600 font-medium border-b">
-              <tr>
-                <th className="py-3 px-6">Name & Lastname</th>
-                <th className="py-3 px-6">Email & Username</th>
-                <th className="py-3 px-6">Country</th>
-                <th className="py-3 px-6">City</th>
-                <th className="py-3 px-6">Address</th>
-                <th className="py-3 px-6">Phone</th>
-                <th className="py-3 px-6">Admin</th>
+          {loading ? (
+            <div className="flex justify-center items-center h-80">
+              <Oval
+                height={80}
+                width={80}
+                color="green"
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="
+                #4f46e5"
+                strokeWidth={4}
+                strokeWidthSecondary={2}
+              />
+            </div>
+          ) : (
+            <table className="w-full table-auto text-sm text-left ">
+              <thead className="bg-gray-50 text-gray-600 font-medium border-b">
+                <tr>
+                  <th className="py-3 px-6">Name & Lastname</th>
+                  <th className="py-3 px-6">Email & Username</th>
+                  <th className="py-3 px-6">Country</th>
+                  <th className="py-3 px-6">City</th>
+                  <th className="py-3 px-6">Address</th>
+                  <th className="py-3 px-6">Phone</th>
+                  <th className="py-3 px-6">Admin</th>
 
-                <th className="py-3 px-6"></th>
-              </tr>
-            </thead>
-            <tbody className="text-white divide-y">
-              {currentItems.map((item) => (
-                <tr key={item._id}>
-                  <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                    <img
-                      src={
-                        item.img ||
-                        "https://images.pexels.com/photos/4321802/pexels-photo-4321802.jpeg?auto=compress&cs=tinysrgb&w=600"
-                      }
-                      className="w-10 h-10 rounded-full"
-                    />
-                    <div>
-                      <span className="block text-white text-sm font-medium">
-                        {item.name} {item.lastname}
-                      </span>
-                      <span className="block text-white text-xs"></span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <span className="block text-white text-sm font-medium">
-                        {item.username}
-                      </span>
-                      <span className="block text-white text-xs">
-                        {item.email}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.country}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.address}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.phone}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.isAdmin.toString()}
-                  </td>
-                  <td className="text-right px-6 whitespace-nowrap">
-                    {/* <a
-                    href={`/hotelDetails/${item._id}`}
-                    className="py-2 px-3 font-medium text-yellow-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                  >
-                    View
-                  </a> */}
-                    <a
-                      href={`/editUser/${item._id}`}
-                      className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                    >
-                      Edit
-                    </a>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  <th className="py-3 px-6"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-white divide-y">
+                {currentItems.map((item) => (
+                  <tr key={item._id}>
+                    <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
+                      <img
+                        src={
+                          item.img ||
+                          "https://images.pexels.com/photos/4321802/pexels-photo-4321802.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        }
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <div>
+                        <span className="block text-white text-sm font-medium">
+                          {item.name} {item.lastname}
+                        </span>
+                        <span className="block text-white text-xs"></span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div>
+                        <span className="block text-white text-sm font-medium">
+                          {item.username}
+                        </span>
+                        <span className="block text-white text-xs">
+                          {item.email}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.country}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.address}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.phone}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.isAdmin.toString()}
+                    </td>
+                    <td className="text-right px-6 whitespace-nowrap">
+                      <a
+                        href={`/userDetails/${item._id}`}
+                        className="py-2 px-3 font-medium text-yellow-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                      >
+                        View
+                      </a>
+                      <a
+                        href={`/editUser/${item._id}`}
+                        className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                      >
+                        Edit
+                      </a>
+                      <button
+                        onClick={() => handleDelete(item._id)}
+                        className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
           {/* Pagination */}
 
