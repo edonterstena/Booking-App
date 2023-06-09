@@ -10,7 +10,7 @@ function FeaturedProperties() {
   );
   return (
     <>
-      <div name="featured-container" className=" bg-white md:p-14">
+      <div name="featured-container" className=" bg-[#F5f5f5] md:p-14">
         <p
           name="featured-container-title"
           className="text-center font-PlusJakartaSans font-bold p-4 text-2xl sm:text-4xl sm:text-start"
@@ -27,7 +27,11 @@ function FeaturedProperties() {
             <>
               {" "}
               {data.map((item) => (
-                <div name="featured-item" className="bg-white " key={item._id}>
+                <div
+                  name="featured-item"
+                  className="bg-[#F5f5f5] "
+                  key={item._id}
+                >
                   <div name="featured-img" className="p-3">
                     <img
                       src={item?.photos[0] || featuredImg}
@@ -38,7 +42,7 @@ function FeaturedProperties() {
 
                   <div
                     name="featured-desc"
-                    className="bg-white  p-3 flex flex-col gap-3 "
+                    className="bg-[#F5f5f5] p-3 flex flex-col gap-3 "
                   >
                     <div name="title-price" className="flex justify-between">
                       <p

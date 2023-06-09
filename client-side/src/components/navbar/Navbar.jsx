@@ -14,11 +14,13 @@ const Navbar = () => {
 
   const { user, dispatch } = useContext(AuthContext);
 
+  console.log(user?._id);
+
   const navigate = useNavigate();
 
   const links = [
     { text: "Home", url: "/", isActive: activeLink === 0 },
-    { text: "Rooms", url: "#", isActive: activeLink === 1 },
+    { text: "Hotels", url: "/hotels", isActive: activeLink === 1 },
     { text: "Contact", url: "#", isActive: activeLink === 2 },
   ];
 
@@ -33,11 +35,13 @@ const Navbar = () => {
     <>
       <div
         name="navbar-container-bigScreen"
-        className=" bg-white  max-w-2xl sm:max-w-6xl md:max-w-full flex justify-around items-center py-4 w-screen "
+        className=" bg-white  shadow-lg shadow-gray-300 max-w-2xl sm:max-w-6xl md:max-w-full flex justify-around items-center py-4 w-screen "
       >
-        <div name="logo">
-          <p className="font-Prata font-bold text-2xl">LOGO</p>
-        </div>
+        <Link to="/">
+          <div name="logo">
+            <p className="font-Prata font-bold text-2xl">LOGO</p>
+          </div>
+        </Link>
         <ul
           name="nav-links"
           className="font-PlusJakartaSans font-[500] md:text-lg flex gap-10 hidden md:flex"
@@ -63,7 +67,7 @@ const Navbar = () => {
         </ul>
         <div name="login-signup-darkmode" className="flex gap-8">
           <FaSun size={20} className="hidden" />
-          <FaMoon size={20} />
+          {/* <FaMoon size={20} /> */}
           <BiUser
             size={20}
             onClick={() => setUserIconClicked(!userIconClicked)}
@@ -71,7 +75,7 @@ const Navbar = () => {
           />
 
           {userIconClicked && (
-            <div className="bg-black rounded text-white absolute top-14 right-[32px] p-2   font-semibold">
+            <div className="bg-black rounded text-white absolute top-14 right-[32px] p-2  z-10 font-semibold">
               <ul className="flex flex-col gap-2 items-center">
                 <Link to="http://localhost:5000/" className="w-full">
                   <li className="hover:bg-white rounded p-1 hover:text-black">
@@ -80,9 +84,11 @@ const Navbar = () => {
                 </Link>
                 {user ? (
                   <>
-                    <li className="hover:bg-white rounded p-1 hover:text-black">
-                      User: {user.email}
-                    </li>
+                    <Link to={`/userProfile/${user?._id}`}>
+                      <li className="hover:bg-white rounded p-1 hover:text-black">
+                        User: {user.email}
+                      </li>
+                    </Link>
                     <li
                       onClick={() => {
                         dispatch({ type: "LOGOUT" });

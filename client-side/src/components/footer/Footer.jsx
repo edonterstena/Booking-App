@@ -7,7 +7,10 @@ import { BsInstagram } from "react-icons/Bs";
 function Footer() {
   return (
     <>
-      <div name="footer-container" className="bg-gray-200 w-full p-4 pt-24">
+      <div
+        name="footer-container"
+        className="bg-gray-900 text-white w-full p-4 pt-24"
+      >
         <div
           name="footer-section"
           className="grid grid-cols-2 p-4 gap-8 sm:grid sm:grid-cols-4 justify-items-start lg:justify-items-center"

@@ -9,15 +9,16 @@ function PropertyList() {
     "http://localhost:8800/api/v1/hotels/countByType"
   );
   const images = [
-    "https://cf.bstatic.com/xdata/images/xphoto/square300/57584488.webp?k=bf724e4e9b9b75480bbe7fc675460a089ba6414fe4693b83ea3fdd8e938832a6&o=",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-apartments_300/9f60235dc09a3ac3f0a93adbc901c61ecd1ce72e.jpg",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/bg_resorts/6f87c6143fbd51a0bb5d15ca3b9cf84211ab0884.jpg",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-villas_300/dd0d7f8202676306a661aa4f0cf1ffab31286211.jpg",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-chalet_300/8ee014fcc493cb3334e25893a1dee8c6d36ed0ba.jpg",
+    "https://images.pexels.com/photos/774042/pexels-photo-774042.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/1450363/pexels-photo-1450363.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/7071955/pexels-photo-7071955.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/749231/pexels-photo-749231.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=600",
   ];
   return (
     <>
-      <div name="featured-container" className=" bg-white md:p-14">
+      <div name="featured-container" className=" bg-[#F5f5f5] md:p-14">
         <p
           name="featured-container-title"
           className="text-center font-PlusJakartaSans font-bold p-4 text-2xl sm:text-4xl sm:text-start"
@@ -29,7 +30,7 @@ function PropertyList() {
         ) : (
           <div
             name="featured-items-list"
-            className="flex flex-col sm:grid sm:grid-cols-2 md:grid md:grid-cols-5 md:justify-items-center p-4"
+            className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid md:grid-cols-2 md:justify-items-center lg:grid-cols-3 lg:gap-20  "
           >
             {data &&
               images.map((img, i) => (
@@ -37,12 +38,12 @@ function PropertyList() {
                   <div
                     style={{ backgroundImage: `url(${img})`, blur }}
                     name="featured-img"
-                    className="p-3 h-48 w-56 bg-no-repeat rounded-t-xl bg-cover flex justify-start items-end "
+                    className="md:p-3 sm:h-48 sm:w-56 border border-gray-400 w-80 h-80 bg-no-repeat rounded-t-xl bg-cover flex justify-start items-end "
                   ></div>
 
                   <div
                     name="featured-desc"
-                    className="bg-white  p-3 flex flex-col gap-3 "
+                    className="bg-white  p-3 flex md:flex-col gap-3 "
                   >
                     <div name="title-price" className="flex justify-between">
                       <p
@@ -55,7 +56,7 @@ function PropertyList() {
                     </div>
                     <div className="flex justify-start">
                       <p name="location" className="font-PlusJakartaSans ">
-                        {data[i]?.count} {data[i]?.type}
+                        {data[i]?.count} {data[i]?.type}s
                       </p>
                     </div>
                   </div>

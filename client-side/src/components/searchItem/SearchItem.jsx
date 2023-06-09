@@ -6,11 +6,11 @@ import { AiFillStar } from "react-icons/Ai";
 import { Link } from "react-router-dom";
 const SearchItem = ({ item }) => {
   return (
-    <div className="p-6 sm:p-16 border lg:flex lg:justify-start lg:gap-5 border-y-gray-300 rounded-lg font-PlusJakartaSans ">
-      <div name="img">
+    <div className="lg:p-6 p-6 sm:p-16 border lg:grid lg:grid-cols-2  lg:justify-center  border-y-gray-300 rounded-lg font-PlusJakartaSans ">
+      <div name="img" className=" lg:w-96 self-center">
         <img
           src={item.photos[0]}
-          className="bg-cover border border-transparent rounded-xl w-full lg:w-80"
+          className="bg-cover border border-transparent rounded-xl w-full lg:w-auto lg:h-fit "
           alt="featured-img"
         />
       </div>
@@ -19,7 +19,7 @@ const SearchItem = ({ item }) => {
         <p name="title" className="lg:text-2xl font-semibold sm:text-3xl">
           {item.name}
         </p>
-        <p>{item.description}</p>
+        <p className="text-justify">{item.description}</p>
         <div name="icons" className="flex gap-2">
           <GrCafeteria />
           <GrCafeteria />
@@ -40,7 +40,7 @@ const SearchItem = ({ item }) => {
               <AiFillStar />
               <AiFillStar />
             </div>
-            <p> {item.rating || 8.45} Reviews</p>
+            <p> {item.averageRating} Reviews</p>
           </div>
           <div name="price" className="flex flex-col">
             <p className="font-semibold text-lg">${item.cheapestPrice}</p>
