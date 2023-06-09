@@ -52,4 +52,35 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    const roomReserved = await this.model("Room").findOne({
+      reservedByUsers: this._id,
+    });
+    const roomNumbersReserved = await this.model("Room").findOne({
+      "roomNumbers.reservedBy": this._id,
+    });
+
+    if (roomReserved) {
+      roomReserved.reservedByUsers.pull(this._id);
+      await roomReserved.save();
+    }
+
+    if (roomNumbersReserved) {
+      roomNumbersReserved.roomNumbers.forEach((roomNumber) => {
+        if (
+          roomNumber.reservedBy &&
+          roomNumber.reservedBy.toString() === this._id.toString()
+        ) {
+          roomNumber.unavailableDates = [];
+          roomNumber.reservedBy = null;
+        }
+      });
+      await roomNumbersReserved.save();
+    }
+  }
+);
+
 module.exports = mongoose.model("User", userSchema);

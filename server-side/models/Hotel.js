@@ -46,9 +46,7 @@ const hotelSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    rooms: {
-      type: [String],
-    },
+
     cheapestPrice: {
       type: Number,
       required: true,
@@ -57,6 +55,12 @@ const hotelSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    rooms: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Room",
+      },
+    ],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

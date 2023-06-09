@@ -31,10 +31,15 @@ const createReview = async (req, res, next) => {
 
 const getAllReviews = async (req, res, next) => {
   try {
-    const reviews = await Review.find({}).populate({
-      path: "hotel",
-      select: "name city type",
-    });
+    const reviews = await Review.find({})
+      .populate({
+        path: "hotel",
+        select: "name city type",
+      })
+      .populate({
+        path: "user",
+        select: "img name lastname createdAt",
+      });
 
     res.status(200).json({ reviews, count: reviews.length });
   } catch (err) {
@@ -103,8 +108,43 @@ const deleteReview = async (req, res, next) => {
 const getSingleHotelReviews = async (req, res, next) => {
   const { id: hotelId } = req.params;
   try {
-    const reviews = await Review.find({ hotel: hotelId });
+    const reviews = await Review.find({ hotel: hotelId }).populate({
+      path: "user",
+      select: "img name lastname createdAt",
+    });
     res.status(200).json({ reviews, count: reviews.length });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const setReviewHelpful = async (req, res, next) => {
+  const { reviewId } = req.params;
+
+  try {
+    const review = await Review.findById(reviewId);
+    if (!review) {
+      return next(createError(404, "Review does not exist!"));
+    }
+
+    const userId = req.user.id;
+
+    // Check if the user has already marked the review as helpful
+    const existingHelpfulReview = review.helpful.find((helpfulReview) =>
+      helpfulReview.userId.equals(userId)
+    );
+    if (existingHelpfulReview) {
+      return res
+        .status(400)
+        .json({ message: "Review already marked as helpful by the user" });
+    }
+
+    // Update the review to mark it as helpful, increment the count, and add the user to the helpful array
+    review.helpful.push({ userId, markedAsHelpful: true });
+    review.numOfHelpful += 1;
+    await review.save();
+
+    res.status(200).json({ review });
   } catch (err) {
     next(err);
   }
@@ -117,4 +157,5 @@ module.exports = {
   updateReview,
   deleteReview,
   getSingleHotelReviews,
+  setReviewHelpful,
 };

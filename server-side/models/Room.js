@@ -18,10 +18,16 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    reservedBy: {
+    reservedByUsers: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: false,
+      },
+    ],
+    hotel: {
       type: mongoose.Schema.ObjectId,
-      ref: "User",
-      required: false,
+      ref: "Hotel",
     },
     createdBy: {
       type: mongoose.Schema.ObjectId,
@@ -29,9 +35,36 @@ const roomSchema = new mongoose.Schema(
       required: true,
     },
 
-    roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
+    roomNumbers: [
+      {
+        number: Number,
+        unavailableDates: { type: [Date] },
+        reservedBy: { type: String },
+      },
+    ],
   },
   { timestamps: true }
+);
+
+roomSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    const hotel = await this.model("Hotel").findOne({ rooms: this._id });
+    const reserved = await this.model("User").findOne({
+      reservedRooms: this._id,
+    });
+
+    if (hotel) {
+      hotel.rooms.pull(this._id);
+      await hotel.save();
+    }
+
+    if (reserved) {
+      reserved.reservedRooms.pull(this._id);
+      await reserved.save();
+    }
+  }
 );
 
 module.exports = mongoose.model("Room", roomSchema);

@@ -28,6 +28,22 @@ const ReviewSchema = mongoose.Schema(
       ref: "Hotel",
       required: true,
     },
+    helpful: [
+      {
+        userId: {
+          type: mongoose.Schema.ObjectId,
+          ref: "User",
+        },
+        markedAsHelpful: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    numOfHelpful: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
@@ -61,8 +77,26 @@ ReviewSchema.statics.calculateAverageRating = async function (hotelId) {
   }
 };
 
+ReviewSchema.statics.totalOfHelpful = async function (reviewId) {
+  const result = await this.aggregate([
+    {
+      $match: { _id: reviewId },
+    },
+    {
+      $group: {
+        _id: null,
+        numOfHelpful: { $sum: 1 },
+      },
+    },
+  ]);
+};
+
 ReviewSchema.post("save", async function () {
   await this.constructor.calculateAverageRating(this.hotel);
+});
+
+ReviewSchema.post("save", async function () {
+  await this.constructor.totalOfHelpful(this._id);
 });
 
 ReviewSchema.post(

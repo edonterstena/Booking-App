@@ -8,6 +8,7 @@ const hotelsRoute = require("./routes/hotels");
 const roomsRoute = require("./routes/rooms");
 const reviewsRoute = require("./routes/reviews");
 const users = require("./routes/users");
+const { verifyToken, verifyUser, verifyAdmin } = require("./utils/verify");
 
 const app = express();
 dotenv.config();
@@ -27,8 +28,6 @@ mongoose.connection.on("disconnected", () => {
 
 //middlewares
 
-app.use(cookieParser());
-app.use(express.json());
 app.use(
   cors({
     origin: [
@@ -39,6 +38,9 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/hotels", hotelsRoute);

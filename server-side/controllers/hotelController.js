@@ -1,15 +1,71 @@
 const Hotel = require("../models/Hotel");
 const Room = require("../models/Room");
 
-const createHotel = async (req, res, next) => {
+// Controller function for creating a new hotel
+async function createHotel(req, res) {
   try {
-    req.body.user = req.user.id;
-    const hotel = await Hotel.create(req.body);
-    res.status(200).json(hotel);
-  } catch (err) {
-    next(err);
+    const {
+      name,
+      type,
+      city,
+      address,
+      title,
+      distance,
+      photos,
+      description,
+      cheapestPrice,
+      featured,
+      rooms,
+    } = req.body;
+
+    // Create a new hotel instance
+    const hotel = new Hotel({
+      name,
+      type,
+      city,
+      address,
+      title,
+      distance,
+      photos,
+      description,
+      cheapestPrice,
+      featured,
+      user: req.user.id, // Assuming the authenticated user is creating the hotel
+    });
+
+    // Save the hotel to the database
+    await hotel.save();
+
+    // Associate rooms with the hotel
+    const associatedRooms = [];
+
+    for (const roomId of rooms) {
+      const room = await Room.findById(roomId);
+
+      if (room) {
+        room.hotel = hotel._id;
+        await room.save();
+        associatedRooms.push(room);
+      }
+    }
+
+    // Update the hotel's rooms property with the associated room instances
+    hotel.rooms = associatedRooms.map((room) => room._id);
+
+    // Save the updated hotel to the database
+    await hotel.save();
+
+    res.status(201).json({
+      message: "Hotel created successfully",
+      hotel,
+    });
+  } catch (error) {
+    console.error("Error creating hotel:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while creating the hotel" });
   }
-};
+}
 
 const updateHotel = async (req, res, next) => {
   try {
@@ -45,7 +101,9 @@ const deleteHotel = async (req, res, next) => {
 
 const getHotel = async (req, res, next) => {
   try {
-    const hotel = await Hotel.findById(req.params.id).populate("reviews");
+    const hotel = await Hotel.findById(req.params.id)
+      .populate("reviews")
+      .populate("rooms");
     res.status(200).json(hotel);
   } catch (err) {
     next(err);
@@ -57,8 +115,10 @@ const getAllHotels = async (req, res, next) => {
   try {
     const hotels = await Hotel.find({
       ...others,
-      cheapestPrice: { $gt: min || 1, $lt: max || 999 },
-    }).limit(req.query.limit);
+      cheapestPrice: { $gte: min || 1, $lte: max || 999 },
+    })
+      .limit(req.query.limit)
+      .populate("rooms");
     res.status(200).json(hotels);
   } catch (err) {
     next(err);
@@ -110,6 +170,7 @@ const countByType = async (req, res, next) => {
   const resortCount = await Hotel.countDocuments({ type: "resort" });
   const villaCount = await Hotel.countDocuments({ type: "villa" });
   const cabinCount = await Hotel.countDocuments({ type: "cabin" });
+  const houseCount = await Hotel.countDocuments({ type: "house" });
 
   res.status(200).json([
     { type: "hotel", count: hotelCount },
@@ -117,6 +178,7 @@ const countByType = async (req, res, next) => {
     { type: "resort", count: resortCount },
     { type: "villa", count: villaCount },
     { type: "cabin", count: cabinCount },
+    { type: "house", count: houseCount },
   ]);
 };
 
