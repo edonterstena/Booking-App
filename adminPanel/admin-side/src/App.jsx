@@ -16,6 +16,7 @@ import EditRoom from "./pages/room/EditRoom";
 import EditUser from "./pages/user/EditUser";
 import CreateUser from "./pages/user/CreateUser";
 import UserDetails from "./pages/user/UserDetails";
+import SubscribersPage from "./pages/subscribe/SubscribersPage";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -150,6 +151,14 @@ function ProtectedLayout() {
               element={
                 <ProtectedRoute>
                   <UserDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/subscribers"
+              element={
+                <ProtectedRoute>
+                  <SubscribersPage />
                 </ProtectedRoute>
               }
             />

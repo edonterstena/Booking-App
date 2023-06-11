@@ -4,16 +4,15 @@ import useFetch from "../../hooks/useFetch";
 import { Oval } from "react-loader-spinner";
 import { CSVLink, CSVDownload } from "react-csv";
 import axios from "axios";
-const HotelPage = () => {
+const SubscribersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4);
   const [searchQuery, setSearchQuery] = useState("");
-
   const navigate = useNavigate();
 
   const { data, loading, error, reFetch } = useFetch(
-    "http://localhost:8800/api/v1/hotels",
-    { withCredentials: true }
+    "http://localhost:8800/api/v1/subscribers"
+    // { withCredentials: true }
   );
 
   const [isLoading, setIsLoading] = useState(loading);
@@ -23,14 +22,8 @@ const HotelPage = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const filteredData = data.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.featured.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = data.filter((item) =>
+    item.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
@@ -45,7 +38,7 @@ const HotelPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8800/api/v1/hotels/${id}`, {
+      await axios.delete(`http://localhost:8800/api/v1/subscribers/${id}`, {
         withCredentials: true,
       });
       reFetch(data);
@@ -69,7 +62,7 @@ const HotelPage = () => {
       <div className="items-start justify-between md:flex">
         <div className="max-w-lg">
           <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
-            Hotel Table
+            Subscribers Table
           </h3>
           <p className="text-gray-600 mt-2">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -84,12 +77,12 @@ const HotelPage = () => {
             Download
           </CSVLink>
 
-          <a
+          {/* <a
             onClick={() => navigate("/createHotel")}
             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm"
           >
             Add Hotel
-          </a>
+          </a> */}
         </div>
       </div>
       <div className="mt-12 shadow-sm border border-gray-700  bg-gray-900 p-4 rounded-lg  overflow-x-auto">
@@ -120,12 +113,12 @@ const HotelPage = () => {
           <table className="w-full table-auto border-gray-700 bg-gray-900 text-sm text-left">
             <thead className="bg-gray-50 text-gray-600 font-medium border-b">
               <tr>
-                <th className="py-3 px-6">Name</th>
-                <th className="py-3 px-6">Type</th>
+                <th className="py-3 px-6">email</th>
+                {/* <th className="py-3 px-6">Type</th>
                 <th className="py-3 px-6">Title</th>
                 <th className="py-3 px-6">City</th>
                 <th className="py-3 px-6">Address</th>
-                <th className="py-3 px-6">Featured</th>
+                <th className="py-3 px-6">Featured</th> */}
 
                 <th className="py-3 px-6"></th>
               </tr>
@@ -134,23 +127,23 @@ const HotelPage = () => {
               {currentItems.map((item) => (
                 <tr key={item._id}>
                   <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                    <img
+                    {/* <img
                       src={
                         item.photos[0] ||
                         "https://images.pexels.com/photos/4321802/pexels-photo-4321802.jpeg?auto=compress&cs=tinysrgb&w=600"
                       }
                       className="w-10 h-10 rounded-full"
-                    />
+                    /> */}
                     <div>
                       <span className="block text-white text-sm font-medium">
-                        {item.name}
+                        {item.email}
                       </span>
-                      <span className="block text-white text-xs">
+                      {/* <span className="block text-white text-xs">
                         Id: {item._id}
-                      </span>
+                      </span> */}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
+                  {/* <td className="px-6 py-4 whitespace-nowrap">{item.type}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{item.title}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{item.city}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -158,21 +151,21 @@ const HotelPage = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {item.featured.toString()}
-                  </td>
+                  </td> */}
 
                   <td className="text-right px-6 whitespace-nowrap">
-                    <a
-                      href={`/hotelDetails/${item._id}`}
-                      className="py-2 px-3 font-medium text-yellow-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                    >
-                      View
-                    </a>
-                    <a
+                    {/* <a
+                    href={`/hotelDetails/${item._id}`}
+                    className="py-2 px-3 font-medium text-yellow-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                  >
+                    View
+                  </a> */}
+                    {/* <a
                       href={`/editHotel/${item._id}`}
                       className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
                     >
                       Edit
-                    </a>
+                    </a> */}
                     <button
                       onClick={() => handleDelete(item._id)}
                       className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
@@ -257,4 +250,4 @@ const HotelPage = () => {
   );
 };
 
-export default HotelPage;
+export default SubscribersPage;
