@@ -203,26 +203,7 @@ const List = () => {
               />
             </div>
           </div>
-          <p className="text-xl">Rating</p>
-          <div
-            name="ratings-options"
-            className="flex justify-center sm:justify-start"
-          >
-            <div className="flex flex-col gap-2 ">
-              <div className="flex gap-2">
-                <input type="checkbox"></input>
-                <label>Wonderful: 9+</label>
-              </div>
-              <div className="flex gap-2">
-                <input type="checkbox"></input>
-                <label>Very Good: 8+</label>
-              </div>
-              <div className="flex gap-2">
-                <input type="checkbox"></input>
-                <label>Good: 7+</label>
-              </div>
-            </div>
-          </div>
+
           <div className="flex justify-center w-full">
             <button
               onClick={handleSearch}

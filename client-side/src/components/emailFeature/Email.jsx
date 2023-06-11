@@ -1,6 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 
 const Email = () => {
+  const [email, setEmail] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8800/api/v1/subscribers", { email });
+      setSuccess(true);
+    } catch (err) {
+      console.log(err);
+      setSuccess(false);
+    }
+  };
+
+  useEffect(() => {
+    let timer;
+    if (success) {
+      timer = setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [success]);
   return (
     <>
       <div
@@ -19,18 +44,22 @@ const Email = () => {
               Sign up and we'll send the best deals
             </p>
           </div>
-          <div name="email-input" className="flex gap-3">
+          <div name="email-input" className="flex gap-3 items-center">
             <input
               type="text"
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter you email address"
-              className="rounded-full px-4 md:w-96 bg-gray-300"
+              className="rounded-full py-2 px-4 md:w-96 bg-gray-300"
             />
             <button
-              type="submit"
+              onClick={handleSubscribe}
               className="bg-black text-white font-medium p-2 rounded-full"
             >
               Subscribe
             </button>
+            {success && (
+              <span className="text-green-800 font-semibold">Subscribed!</span>
+            )}
           </div>
         </div>
       </div>

@@ -14,14 +14,14 @@ const Navbar = () => {
 
   const { user, dispatch } = useContext(AuthContext);
 
-  console.log(user?._id);
+  // console.log(user?._id);
 
   const navigate = useNavigate();
 
   const links = [
     { text: "Home", url: "/", isActive: activeLink === 0 },
     { text: "Hotels", url: "/hotels", isActive: activeLink === 1 },
-    { text: "Contact", url: "#", isActive: activeLink === 2 },
+    { text: "Contact", url: "/contact", isActive: activeLink === 2 },
   ];
 
   const handleLinkClick = (index) => {

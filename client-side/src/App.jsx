@@ -7,6 +7,8 @@ import Register from "./pages/register/Register";
 import UserProfile from "./pages/userProfile/UserProfile";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import Contact from "./pages/contact/Contact";
+import Dashboard from "../../adminPanel/admin-side/src/pages/dashboard/Dashboard";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -27,6 +29,8 @@ function App() {
         <Route path="/hotels/:id" element={<Hotel />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<Contact />} />
+
         <Route
           path="/userProfile/:id"
           element={
