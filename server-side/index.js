@@ -8,6 +8,8 @@ const hotelsRoute = require("./routes/hotels");
 const roomsRoute = require("./routes/rooms");
 const reviewsRoute = require("./routes/reviews");
 const users = require("./routes/users");
+const subscribersRoute = require("./routes/subscribe");
+const contactRoute = require("./routes/contact");
 const { verifyToken, verifyUser, verifyAdmin } = require("./utils/verify");
 
 const app = express();
@@ -47,6 +49,8 @@ app.use("/api/v1/hotels", hotelsRoute);
 app.use("/api/v1/reviews", reviewsRoute);
 app.use("/api/v1/rooms", roomsRoute);
 app.use("/api/v1/users", users);
+app.use("/api/v1/subscribers", subscribersRoute);
+app.use("/api/v1/send-email", contactRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
