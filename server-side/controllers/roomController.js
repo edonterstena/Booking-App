@@ -170,26 +170,15 @@ const updateRoomAvailability = async (req, res, next) => {
   req.body.reservedBy = req.user.id;
 
   try {
-    // const room = await Room.findById(req.params.id);
-    // if (!room) {
-    //   return res.status(404).json("Room not found!");
-    // }
-    const roomIds = [];
-
-    for (const roomId of req.body.roomIds) {
-      roomIds.push(roomId);
-    }
-    // console.log(roomIds);
-
-    const user = await User.findById(req.user.id);
-    for (const rmId of roomIds) {
-      user.reservedRooms.push(rmId);
-    }
-
-    await user.save();
-
+    const roomIds = req.body.roomIds;
     const roomNumberIds = req.body.roomNumberIds;
     const dates = req.body.dates;
+
+    const user = await User.findById(req.user.id);
+    for (const roomId of roomIds) {
+      user.reservedRooms.push(roomId);
+    }
+    await user.save();
 
     await Room.updateMany(
       {
@@ -198,18 +187,18 @@ const updateRoomAvailability = async (req, res, next) => {
       },
       {
         $push: {
-          "roomNumbers.$.unavailableDates": { $each: dates },
-          // "roomNumbers.$.reservedBy": req.body.reservedBy,
-          // reservedByUsers: req.body.reservedByUsers,
+          "roomNumbers.$[roomNumber].unavailableDates": { $each: dates },
         },
         $set: {
-          "roomNumbers.$.reservedBy": req.body.reservedBy,
+          "roomNumbers.$[roomNumber].reservedBy": req.body.reservedBy,
         },
         $addToSet: {
           reservedByUsers: req.body.reservedByUsers,
         },
       },
-      { arrayFilters: [{ "roomNumbers._id": { $in: roomNumberIds } }] }
+      {
+        arrayFilters: [{ "roomNumber._id": { $in: roomNumberIds } }],
+      }
     );
 
     res.status(200).json("Room status has been updated.");

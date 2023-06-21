@@ -103,7 +103,14 @@ const getHotel = async (req, res, next) => {
   try {
     const hotel = await Hotel.findById(req.params.id)
       .populate("reviews")
-      .populate("rooms");
+      .populate({
+        path: "rooms",
+        populate: {
+          path: "reservedByUsers",
+          select: "name lastname",
+        },
+      });
+
     res.status(200).json(hotel);
   } catch (err) {
     next(err);
@@ -167,17 +174,17 @@ const hotelCities = async (req, res, next) => {
 const countByType = async (req, res, next) => {
   const hotelCount = await Hotel.countDocuments({ type: "hotel" });
   const apartmentCount = await Hotel.countDocuments({ type: "apartment" });
-  const resortCount = await Hotel.countDocuments({ type: "resort" });
+
   const villaCount = await Hotel.countDocuments({ type: "villa" });
-  const cabinCount = await Hotel.countDocuments({ type: "cabin" });
+
   const houseCount = await Hotel.countDocuments({ type: "house" });
 
   res.status(200).json([
     { type: "hotel", count: hotelCount },
     { type: "apartment", count: apartmentCount },
-    { type: "resort", count: resortCount },
+
     { type: "villa", count: villaCount },
-    { type: "cabin", count: cabinCount },
+
     { type: "house", count: houseCount },
   ]);
 };
