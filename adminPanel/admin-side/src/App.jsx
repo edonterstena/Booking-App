@@ -17,6 +17,7 @@ import EditUser from "./pages/user/EditUser";
 import CreateUser from "./pages/user/CreateUser";
 import UserDetails from "./pages/user/UserDetails";
 import SubscribersPage from "./pages/subscribe/SubscribersPage";
+import RoomDetails from "./pages/room/RoomDetails";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -55,7 +56,7 @@ function ProtectedLayout() {
   return (
     <>
       <div className="flex items-center ">
-        <SideBar />
+        {/* <SideBar /> */}
         <div className="w-screen">
           <Routes>
             <Route
@@ -119,6 +120,14 @@ function ProtectedLayout() {
               element={
                 <ProtectedRoute>
                   <EditRoom />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/roomDetails/:id"
+              element={
+                <ProtectedRoute>
+                  <RoomDetails />
                 </ProtectedRoute>
               }
             />

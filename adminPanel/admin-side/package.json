@@ -10,15 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.0.4",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.9.0",
     "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.7.3",
+    "react-slick": "^0.29.0",
     "recharts": "^2.6.2",
-    "sass": "^1.63.3"
+    "sass": "^1.63.3",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
