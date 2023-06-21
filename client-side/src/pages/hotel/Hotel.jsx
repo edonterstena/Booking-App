@@ -138,7 +138,7 @@ const Hotel = () => {
                 </p>
                 <div className="flex gap-2 items-center">
                   <p className="font-semibold text-2xl">
-                    ${days * data.cheapestPrice * guests.room}
+                    ${days * data.cheapestPrice}
                   </p>
                   <p className="text-xl">({days} nights)</p>
                 </div>
@@ -163,7 +163,13 @@ const Hotel = () => {
       <Email />
       <Footer />
 
-      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
+      {openModal && (
+        <Reserve
+          setOpen={setOpenModal}
+          hotelId={id}
+          hotelPrice={days * data.cheapestPrice}
+        />
+      )}
     </div>
   );
 };

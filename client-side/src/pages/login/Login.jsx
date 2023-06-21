@@ -31,7 +31,7 @@ const Login = () => {
   };
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center px-4 bg-gray-400 ">
-      <div className="max-w-sm w-full text-gray-600 shadow-2xl bg-white shadow-gray-800 px-10 py-8 rounded-2xl">
+      <div className="max-w-sm w-full text-gray-600 shadow-2xl  bg-white shadow-gray-800 px-10 py-8 rounded-2xl">
         <div className="text-center ">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSdj0zbn-1d0dJbVLL9EUFAX67byLEhnfQFA&usqp=CAU"
@@ -81,11 +81,11 @@ const Login = () => {
             Sign in
           </button>
           {error && <span>{error.message}</span>}
-          <div className="text-center">
+          {/* <div className="text-center">
             <a href="/forgot-password" className="hover:text-indigo-600">
               Forgot password?
             </a>
-          </div>
+          </div> */}
         </form>
       </div>
     </main>

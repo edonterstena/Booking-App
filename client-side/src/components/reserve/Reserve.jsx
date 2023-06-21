@@ -2,15 +2,17 @@ import { AiFillCloseCircle } from "react-icons/Ai";
 
 import "./reserve.css";
 import useFetch from "../../hooks/useFetch";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../../context/SearchContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Reserve = ({ setOpen, hotelId }) => {
+const Reserve = ({ setOpen, hotelId, hotelPrice }) => {
   const [isRoomSelected, setIsRoomSelected] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [selectedRoomsNumber, setSelectedRoomsNumber] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(hotelPrice);
+  const [roomPrice, setRoomPrice] = useState(0);
   const { data, loading, error } = useFetch(
     `http://localhost:8800/api/v1/hotels/room/${hotelId}`
   );
@@ -48,24 +50,39 @@ const Reserve = ({ setOpen, hotelId }) => {
     return roomNumber.unavailableDates.length == 0;
   };
 
-  const handleSelect = (e) => {
+  const handleSelect = (e, roomPrice, roomNumberId) => {
     const checked = e.target.checked;
-    // if (checked) {
-    //   setIsRoomSelected(true);
-    // } else {
-    //   setIsRoomSelected(false);
-    // }
-    const value = e.target.value;
-    setSelectedRoomsNumber(
-      checked
-        ? [...selectedRoomsNumber, value]
-        : selectedRoomsNumber.filter((item) => item !== value)
-    );
+
+    setSelectedRoomsNumber((prevSelectedRoomsNumber) => {
+      if (checked) {
+        return [...prevSelectedRoomsNumber, roomNumberId];
+      } else {
+        return prevSelectedRoomsNumber.filter((item) => item !== roomNumberId);
+      }
+    });
+
+    setTotalPrice((prevTotalPrice) => {
+      if (checked) {
+        return prevTotalPrice + roomPrice;
+      } else {
+        return prevTotalPrice - roomPrice;
+      }
+    });
   };
 
-  const handleSelectRoom = (e) => {
+  useEffect(() => {
+    console.log(selectedRoomsNumber);
+  }, [selectedRoomsNumber]);
+
+  const handleSelectRoom = (e, roomPrice) => {
     const checked = e.target.checked;
     const value = e.target.value;
+
+    if (checked) {
+      setRoomPrice(roomPrice);
+    } else {
+      setRoomPrice(0);
+    }
     setSelectedRooms(
       checked
         ? [...selectedRooms, value]
@@ -73,6 +90,7 @@ const Reserve = ({ setOpen, hotelId }) => {
     );
   };
   console.log(selectedRooms);
+  console.log("Room price" + roomPrice);
 
   const navigate = useNavigate();
 
@@ -132,7 +150,7 @@ const Reserve = ({ setOpen, hotelId }) => {
                 <input
                   type="checkbox"
                   value={item?._id}
-                  onClick={handleSelectRoom}
+                  onClick={(e) => handleSelectRoom(e, item.price)}
                   className="w-5 "
                   // id={item?._id}
                 />
@@ -144,7 +162,7 @@ const Reserve = ({ setOpen, hotelId }) => {
                 <div className="rMax">
                   Max people: <b>{item?.maxPeople}</b>
                 </div>
-                <div className="rPrice">{item?.price}</div>
+                <div className="rPrice">{item?.price}$</div>
               </div>
               <div className="rSelectRooms">
                 {item?.roomNumbers.map((roomNumber) => (
@@ -153,10 +171,12 @@ const Reserve = ({ setOpen, hotelId }) => {
                     <input
                       type="checkbox"
                       value={roomNumber?._id}
-                      onChange={handleSelect}
+                      onChange={(e) =>
+                        handleSelect(e, item.price, roomNumber?._id)
+                      }
                       disabled={
-                        !isAvailable(roomNumber) ||
-                        !selectedRooms.includes(item?._id)
+                        !isAvailable(roomNumber)
+                        // !selectedRoomsNumber.includes(roomNumber?._id)
                       }
                     />
                   </div>
@@ -169,6 +189,10 @@ const Reserve = ({ setOpen, hotelId }) => {
         <button onClick={handleClick} className="rButton">
           Reserve Now!
         </button>
+
+        <div>
+          <p>Total price: {totalPrice}$</p>
+        </div>
       </div>
     </div>
   );

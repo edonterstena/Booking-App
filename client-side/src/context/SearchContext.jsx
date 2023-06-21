@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   guests: {
     adult: undefined,
     children: undefined,
-    room: undefined,
+    // room: undefined,
   },
 };
 

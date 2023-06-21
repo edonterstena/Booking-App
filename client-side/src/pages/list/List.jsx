@@ -193,7 +193,7 @@ const List = () => {
                 min={0}
               />
             </div>
-            <div className="flex justify-between ">
+            {/* <div className="flex justify-between ">
               <label>Room</label>
               <input
                 type="number"
@@ -201,7 +201,7 @@ const List = () => {
                 placeholder={guests?.room}
                 min={1}
               />
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-center w-full">

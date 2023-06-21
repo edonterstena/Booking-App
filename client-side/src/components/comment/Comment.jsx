@@ -23,7 +23,7 @@ const Comment = () => {
 
   const userString = localStorage.getItem("user");
   const user = JSON.parse(userString);
-  const userId = user._id;
+  const userId = user?._id;
 
   const isSubmitted = data.reviews?.some(
     (review) => review.user._id === userId

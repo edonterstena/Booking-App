@@ -27,7 +27,7 @@ const Header = ({ type }) => {
   const [guests, setGuests] = useState({
     adult: 1,
     children: 0,
-    room: 1,
+    // room: 1,
   });
 
   const handleGuest = (name, operation) => {
@@ -143,7 +143,7 @@ const Header = ({ type }) => {
                 onClick={() => setOpenGuest(!openGuest)}
                 className="w-full  text-gray-400 bg-white border border-solid border-white-500  transition-all duration-200 ease-in-out rounded-full hover:shadow hover:shadow-gray-500 text-center lg:rounded-full lg:px-2 "
               >
-                {`${guests.adult} adult - ${guests.children} children - ${guests.room}  room`}
+                {`${guests.adult} adult - ${guests.children} children `}
               </span>
               {openGuest && (
                 <div
@@ -201,7 +201,7 @@ const Header = ({ type }) => {
                         </button>
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       name="room-item "
                       className="flex w-56 justify-between text-2xl font-semibold font-PlusJakartaSans"
                     >
@@ -222,7 +222,7 @@ const Header = ({ type }) => {
                           +
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )}

@@ -11,9 +11,9 @@ function PropertyList() {
   const images = [
     "https://images.pexels.com/photos/774042/pexels-photo-774042.jpeg?auto=compress&cs=tinysrgb&w=600",
     "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=600",
-    "https://images.pexels.com/photos/1450363/pexels-photo-1450363.jpeg?auto=compress&cs=tinysrgb&w=600",
+
     "https://images.pexels.com/photos/7071955/pexels-photo-7071955.jpeg?auto=compress&cs=tinysrgb&w=600",
-    "https://images.pexels.com/photos/749231/pexels-photo-749231.jpeg?auto=compress&cs=tinysrgb&w=600",
+
     "https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=600",
   ];
   return (
@@ -30,7 +30,7 @@ function PropertyList() {
         ) : (
           <div
             name="featured-items-list"
-            className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid md:grid-cols-2 md:justify-items-center lg:grid-cols-3 lg:gap-20  "
+            className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid md:grid-cols-2 md:justify-items-center lg:grid-cols-4 "
           >
             {data &&
               images.map((img, i) => (
