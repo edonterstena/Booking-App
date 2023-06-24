@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
 import { DateRange } from "react-date-range";
+import { Oval } from "react-loader-spinner";
 
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -34,6 +35,25 @@ const List = () => {
       room: 1,
     }
   );
+
+  const [types, setTypes] = useState([]);
+
+  const handleTypeChange = (event) => {
+    const selectedTypes = [...types]; // Create a copy of the types array
+    const typeValue = event.target.value;
+
+    if (event.target.checked) {
+      selectedTypes.push(typeValue); // Add the selected type to the array
+    } else {
+      const typeIndex = selectedTypes.indexOf(typeValue);
+      if (typeIndex !== -1) {
+        selectedTypes.splice(typeIndex, 1); // Remove the type if it exists in the array
+      }
+    }
+
+    setTypes(selectedTypes); // Update the types state with the modified array
+  };
+
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
@@ -45,14 +65,15 @@ const List = () => {
       setMax(dates[0].endDate);
     }
   }, [dates]);
-
   const { data, loading, error, reFetch } = useFetch(
-    `http://localhost:8800/api/v1/hotels${
-      destination
-        ? `?city=${destination}`
+    `http://localhost:8800/api/v1/hotels?${
+      destination ? `destination=${destination}` : ""
+    }${
+      Array.isArray(types) && types.length > 0
+        ? `&types=${types.join(",")}`
         : ""
-        ? ""
-        : `?min=${min || 0}&max=${max || 999}`
+    }${min !== undefined ? `&min=${min}` : ""}${
+      max !== undefined ? `&max=${max}` : ""
     }`
   );
 
@@ -76,7 +97,10 @@ const List = () => {
 
   const { dispatch } = useContext(SearchContext);
   const handleSearch = () => {
-    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, guests } });
+    dispatch({
+      type: "NEW_SEARCH",
+      payload: { destination, dates, guests, types },
+    });
     reFetch();
     // navigate("/hotels", { state: { destination, dates, guests } });
   };
@@ -91,7 +115,19 @@ const List = () => {
       >
         <div name="searchItems">
           {loading ? (
-            "loading"
+            <div className="flex justify-center items-center h-80">
+              <Oval
+                height={80}
+                width={80}
+                color="green"
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="
+        #4f46e5"
+                strokeWidth={4}
+                strokeWidthSecondary={2}
+              />
+            </div>
           ) : (
             <>
               {data.map((item) => (
@@ -157,9 +193,10 @@ const List = () => {
               )}
             </div>
           </div>
+          <hr className="border border-lg border-gray-800 w-full" />
           <p className="text-xl">Guests-Options</p>
           <div className="flex flex-col gap-4 sm:w-56">
-            <div className="flex justify-between items-center ">
+            <div className="flex justify-between items-center  ">
               <label>Min price (per night)</label>
               <input
                 type="number"
@@ -202,6 +239,46 @@ const List = () => {
                 min={1}
               />
             </div> */}
+          </div>
+          <hr className="border border-lg border-gray-800 rounded-full w-full" />
+          <div className="flex flex-col gap-4 sm:w-56">
+            <h1 className="font-semibold flex self-center">Search by Type: </h1>
+            <div className="flex gap-2">
+              <input
+                type="checkbox"
+                id="hotel"
+                value="hotel"
+                onChange={handleTypeChange}
+              />
+              <label htmlFor="hotel">Hotel</label>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="checkbox"
+                id="villa"
+                value="villa"
+                onChange={handleTypeChange}
+              />
+              <label htmlFor="villa">Villa</label>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="checkbox"
+                id="apartment"
+                value="apartment"
+                onChange={handleTypeChange}
+              />
+              <label htmlFor="apartment">Apartment</label>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="checkbox"
+                id="house"
+                value="house"
+                onChange={handleTypeChange}
+              />
+              <label htmlFor="house">House</label>
+            </div>
           </div>
 
           <div className="flex justify-center w-full">

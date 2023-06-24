@@ -8,7 +8,8 @@ import UserProfile from "./pages/userProfile/UserProfile";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Contact from "./pages/contact/Contact";
-import Dashboard from "../../adminPanel/admin-side/src/pages/dashboard/Dashboard";
+
+import NotFound from "./pages/404Page/NotFound";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -39,6 +40,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </BrowserRouter>
   );

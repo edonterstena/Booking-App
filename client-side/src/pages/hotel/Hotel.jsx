@@ -11,6 +11,8 @@ import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
 import Comment from "../../components/comment/Comment";
 import Rating from "../../components/rating/Rating";
+import { Oval } from "react-loader-spinner";
+import { Carousel } from "@material-tailwind/react";
 
 const Hotel = () => {
   const location = useLocation();
@@ -67,7 +69,19 @@ const Hotel = () => {
       <Navbar />
       {/* <Header type="list" /> */}
       {loading ? (
-        "loading"
+        <div className="flex justify-center items-center h-80">
+          <Oval
+            height={80}
+            width={80}
+            color="green"
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="
+          #4f46e5"
+            strokeWidth={4}
+            strokeWidthSecondary={2}
+          />
+        </div>
       ) : (
         <div name="hotel-container">
           <div
@@ -103,16 +117,42 @@ const Hotel = () => {
                 </button>
               </div>
             </div>
-            <div
-              name="img-container"
-              className="grid grid-cols-1 gap-2 lg:grid-cols-3"
-            >
-              {data.photos?.map((photo, i) => (
-                <div name="img-item" key={i}>
-                  <img src={photo} />
+            <div className="md:flex-1 px-4">
+              <div className="h-[460px] rounded-lg bg-gray-300 mb-4">
+                <Carousel className="rounded-xl">
+                  {data.photos?.map((item, i) => (
+                    <img
+                      key={i}
+                      src={item}
+                      alt={`image ${i + 1}`}
+                      className="h-full w-full object-cover"
+                    />
+                  ))}
+                  {/* <img
+                    src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
+                    alt="image 2"
+                    className="h-full w-full object-cover"
+                  />
+                    src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
+                    alt="image 3"
+                    className="h-full w-full object-cover"
+                  /> */}
+                </Carousel>
+              </div>
+              {/* <div className="flex -mx-2 mb-4">
+                <div className="w-1/2 px-2">
+                  <button className="w-full bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800">
+                    Add to Cart
+                  </button>
                 </div>
-              ))}
+                <div className="w-1/2 px-2">
+                  <button className="w-full bg-gray-400 text-gray-800 py-2 px-4 rounded-full font-bold hover:bg-gray-300">
+                    Add to Wishlist
+                  </button>
+                </div>
+              </div> */}
             </div>
+
             <div
               name="hotel-details"
               className="flex flex-col gap-24  lg:flex-row "

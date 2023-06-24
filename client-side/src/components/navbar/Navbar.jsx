@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const { user, dispatch } = useContext(AuthContext);
 
-  // console.log(user?._id);
+  console.log(user?._id);
 
   const navigate = useNavigate();
 

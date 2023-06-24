@@ -5,15 +5,18 @@ import axios from "axios";
 const Email = () => {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8800/api/v1/subscribers", { email });
       setSuccess(true);
+      setError(false);
     } catch (err) {
       console.log(err);
       setSuccess(false);
+      setError(true);
     }
   };
 
@@ -26,6 +29,17 @@ const Email = () => {
     }
     return () => clearTimeout(timer);
   }, [success]);
+
+  useEffect(() => {
+    let timer;
+    if (error) {
+      timer = setTimeout(() => {
+        setError(false);
+      }, 2000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [error]);
   return (
     <>
       <div
@@ -58,7 +72,14 @@ const Email = () => {
               Subscribe
             </button>
             {success && (
-              <span className="text-green-800 font-semibold">Subscribed!</span>
+              <span className="text-white p-1 rounded bg-green-500  font-semibold">
+                Subscribed!
+              </span>
+            )}
+            {error && (
+              <span className="text-white p-1 rounded bg-red-500 font-semibold">
+                An server error occurred!
+              </span>
             )}
           </div>
         </div>

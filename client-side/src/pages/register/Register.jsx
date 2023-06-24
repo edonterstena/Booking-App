@@ -53,12 +53,17 @@ const Register = () => {
 
   return (
     <main className="w-full h-full flex  items-center justify-center px-4 bg-gray-400 ">
-      <div className=" w-fit text-gray-600 shadow-2xl bg-white m-40 shadow-gray-800 px-10 py-8 rounded-2xl">
-        <div className="text-center ">
+      <div className=" w-fit grid grid-cols-2 gap-4 text-gray-600 shadow-2xl bg-white m-40 shadow-gray-800 px-10 py-8 rounded-2xl">
+        <div className="text-center flex flex-col self-center">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSdj0zbn-1d0dJbVLL9EUFAX67byLEhnfQFA&usqp=CAU"
-            width={150}
-            className="mx-auto rounded-full "
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSdj0zbn-1d0dJbVLL9EUFAX67byLEhnfQFA&usqp=CAU"
+            }
+            alt=""
+            width={120}
+            className="mx-auto rounded "
           />
           <div className="mt-5 space-y-2">
             <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">
@@ -75,14 +80,15 @@ const Register = () => {
             </p>
           </div>
         </div>
-        <form className="mt-8 space-y-5 grid grid-cols-3 gap-3">
+
+        <form className="mt-8  grid grid-cols-3 gap-3">
           <div>
             <label className="font-medium">Username</label>
             <input
               onChange={(e) => setUsername(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -91,7 +97,7 @@ const Register = () => {
               onChange={(e) => setName(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -100,7 +106,7 @@ const Register = () => {
               onChange={(e) => setLastname(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -109,7 +115,7 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -118,7 +124,7 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -127,7 +133,7 @@ const Register = () => {
               onChange={(e) => setAddress(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -136,7 +142,7 @@ const Register = () => {
               onChange={(e) => setCountry(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
 
@@ -146,7 +152,7 @@ const Register = () => {
               onChange={(e) => setPhone(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
           <div>
@@ -155,12 +161,12 @@ const Register = () => {
               onChange={(e) => setCity(e.target.value)}
               type="text"
               required
-              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-sm"
             />
           </div>
 
           <div>
-            <div className="w-40">
+            {/* <div className="w-40">
               <img
                 src={
                   file
@@ -169,7 +175,7 @@ const Register = () => {
                 }
                 alt=""
               />
-            </div>
+            </div> */}
             <div>
               <label
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -197,7 +203,7 @@ const Register = () => {
         <button
           type="submit"
           onClick={handleClick}
-          className="w-full px-4 py-4 mt-4 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+          className="w-full px-4 py-4 mt-4  text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
         >
           Sign up
         </button>

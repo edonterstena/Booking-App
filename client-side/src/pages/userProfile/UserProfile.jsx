@@ -84,7 +84,7 @@ const UserProfile = () => {
     <>
       <Navbar />
       <div className="flex justify-center p-20">
-        <div className="bg-white  shadow overflow-hidden sm:rounded-lg ">
+        <div className="bg-white   shadow-black shadow-lg overflow-hidden sm:rounded-lg ">
           <div className="px-4 py-5 sm:px-6 ">
             {/* <div className="flex gap-10 border bg-white border-gray-400 rounded px-10 py-5 ">
               <img src={data.img} className="rounded-full w-48 h-48" />
@@ -135,8 +135,6 @@ const UserProfile = () => {
                     <tr>
                       <th className="py-3 px-6">Title</th>
                       <th className="py-3 px-6">Room Numbers</th>
-
-                      <th className="py-3 px-6"></th>
                     </tr>
                   </thead>
                   <tbody className="text-white divide-y">
@@ -268,7 +266,7 @@ const UserProfile = () => {
               </div>
             </div>
             <button
-              className="bg-yellow-600 rounded p-2 text-white font-semibold mt-2 "
+              className="bg-yellow-800 rounded p-2 text-white font-semibold mt-2 "
               onClick={handleHome}
             >
               Return back

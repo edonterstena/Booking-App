@@ -3,6 +3,11 @@ import featuredImg from "../../img/featured-img.jpg";
 
 import { GrCafeteria } from "react-icons/gr";
 import { AiFillStar } from "react-icons/Ai";
+import { FaBed, FaParking } from "react-icons/fa";
+import { BiWifi } from "react-icons/bi";
+import { GiCoffeeCup } from "react-icons/gi";
+import { MdPets } from "react-icons/md";
+
 import { Link } from "react-router-dom";
 const SearchItem = ({ item }) => {
   return (
@@ -10,7 +15,7 @@ const SearchItem = ({ item }) => {
       <div name="img" className=" lg:w-96 self-center">
         <img
           src={item.photos[0]}
-          className="bg-cover border border-transparent rounded-xl w-full lg:w-auto lg:h-fit "
+          className="bg-cover border border-transparent rounded-xl w-full lg:w-auto lg:h-fit"
           alt="featured-img"
         />
       </div>
@@ -22,13 +27,13 @@ const SearchItem = ({ item }) => {
         <p className="text-justify">{item.description}</p>
         <div name="icons" className="flex gap-2">
           <GrCafeteria />
-          <GrCafeteria />
-          <GrCafeteria />
-          <GrCafeteria />
-          <GrCafeteria />
-          <GrCafeteria />
-          <GrCafeteria />
-          <GrCafeteria />
+          <FaBed />
+
+          <BiWifi />
+          <GiCoffeeCup />
+          {/* <FaPersonSwimming /> */}
+          <FaParking />
+          <MdPets />
         </div>
 
         <div name="reviews-price" className="flex justify-between lg:gap-40">

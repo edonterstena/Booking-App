@@ -159,7 +159,7 @@ const Header = ({ type }) => {
                   >
                     <div
                       name="adult-item "
-                      className="flex w-56 justify-between text-2xl font-semibold font-PlusJakartaSans"
+                      className="flex w-56 justify-between text-xl font-semibold font-PlusJakartaSans"
                     >
                       <p>Adult</p>
                       <div className="flex gap-3 ">
@@ -181,7 +181,7 @@ const Header = ({ type }) => {
                     </div>
                     <div
                       name="children-item "
-                      className="flex w-56 justify-between text-2xl font-semibold font-PlusJakartaSans"
+                      className="flex w-56 justify-between text-xl font-semibold font-PlusJakartaSans"
                     >
                       <p>Children</p>
                       <div className="flex gap-3 ">
