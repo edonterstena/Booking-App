@@ -85,10 +85,10 @@ const RoomPage = () => {
 
   return (
     <div className="flex">
-      <div>
+      <div className="sticky top-0">
         <Sidebar />
       </div>
-      <div className="flex self-center ">
+      <div className="h-screen overflow-y-auto p-8 ">
         <div className="max-w-fit mx-auto  md:px-8">
           <div className="items-start justify-between md:flex">
             <div className="max-w-lg">

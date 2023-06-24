@@ -67,11 +67,11 @@ const HotelPage = () => {
 
   return (
     <div className="flex">
-      <div>
+      <div className="sticky top-0">
         <Sidebar />
       </div>
-      <div>
-        <div className=" max-w-fit mx-auto py-20 px-4 md:px-8">
+      <div className="h-screen overflow-auto">
+        <div className="  max-w-fit mx-auto py-20 px-4 md:px-8">
           <div className="items-start justify-between md:flex">
             <div className="max-w-lg">
               <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
@@ -133,7 +133,7 @@ const HotelPage = () => {
                     <th className="py-3 px-6">Address</th>
                     <th className="py-3 px-6">Featured</th>
 
-                    <th className="py-3 px-6"></th>
+                    <th className="py-3 px-6">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="text-white divide-y">

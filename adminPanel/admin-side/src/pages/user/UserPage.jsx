@@ -43,7 +43,8 @@ const UserPage = () => {
       item.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.address.toLowerCase().includes(searchQuery.toLowerCase())
+      item.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item._id === searchQuery
   );
 
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
@@ -80,10 +81,10 @@ const UserPage = () => {
 
   return (
     <div className="flex ">
-      <div>
+      <div className="sticky top-0">
         <Sidebar />
       </div>
-      <div className="flex flex-col self-center">
+      <div className=" h-screen overflow-y-auto flex flex-col self-center p-4">
         {" "}
         <div className="max-w-fit  px-4 md:px-8">
           <div className="items-start justify-between md:flex">
@@ -166,7 +167,9 @@ const UserPage = () => {
                           <span className="block text-white text-sm font-medium">
                             {item.name} {item.lastname}
                           </span>
-                          <span className="block text-white text-xs"></span>
+                          <span className="block text-white text-xs">
+                            Id:{item._id}
+                          </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

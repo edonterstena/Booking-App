@@ -60,11 +60,11 @@ const SubscribersPage = () => {
 
   return (
     <div className="flex gap-56">
-      <div>
+      <div className="sticky top-0">
         <Sidebar />
       </div>
-      <div className="flex self-center ">
-        <div className="max-w-fit mx-auto px-4 md:px-8">
+      <div className="h-screen overflow-y-auto p-8 ">
+        <div className="w-[500px]  px-4 md:px-8">
           <div className="items-start justify-between md:flex">
             <div className="max-w-lg">
               <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">

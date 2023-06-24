@@ -36,7 +36,7 @@ const Sidebar = () => {
 
   const userId = user?._id;
 
-  const isIdMatch = data.some((item) => item._id === userId);
+  // const isIdMatch = data.some((item) => item._id === userId);
 
   // console.log(isIdMatch);
 
@@ -146,7 +146,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <nav className=" h-screen border-r bg-gray-800 space-y-8 w-80">
+      <nav className=" h-screen border-r bg-gray-800 space-y-8 w-60">
         <div className="flex flex-col h-full">
           <div className="h-20 flex items-center px-8 ">
             <a
@@ -193,7 +193,7 @@ const Sidebar = () => {
                         {userName}
                       </span>
                       <a
-                        href="/"
+                        href={`/userDetails/${userId}`}
                         className="block mt-px text-gray-300 hover:text-indigo-600 text-xs"
                       >
                         View profile
