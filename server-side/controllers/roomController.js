@@ -175,9 +175,11 @@ const updateRoomAvailability = async (req, res, next) => {
     const dates = req.body.dates;
 
     const user = await User.findById(req.user.id);
+
     for (const roomId of roomIds) {
       user.reservedRooms.push(roomId);
     }
+
     await user.save();
 
     await Room.updateMany(

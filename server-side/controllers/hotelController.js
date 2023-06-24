@@ -118,12 +118,25 @@ const getHotel = async (req, res, next) => {
 };
 
 const getAllHotels = async (req, res, next) => {
-  const { min, max, ...others } = req.query;
+  const { destination, min, max, types } = req.query;
+
+  // Build the query parameters based on the provided values
+  const query = {};
+  if (destination) {
+    query.city = destination;
+  }
+  if (min || max) {
+    query.cheapestPrice = {
+      $gte: min || 1,
+      $lte: max || 999,
+    };
+  }
+  if (types) {
+    query.type = { $in: types.split(",") };
+  }
+
   try {
-    const hotels = await Hotel.find({
-      ...others,
-      cheapestPrice: { $gte: min || 1, $lte: max || 999 },
-    })
+    const hotels = await Hotel.find(query)
       .limit(req.query.limit)
       .populate("rooms");
     res.status(200).json(hotels);

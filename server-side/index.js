@@ -7,6 +7,7 @@ const authRoute = require("./routes/auth");
 const hotelsRoute = require("./routes/hotels");
 const roomsRoute = require("./routes/rooms");
 const reviewsRoute = require("./routes/reviews");
+const dashboardRoute = require("./routes/dashboard");
 const users = require("./routes/users");
 const subscribersRoute = require("./routes/subscribe");
 const contactRoute = require("./routes/contact");
@@ -41,6 +42,7 @@ app.use(
   })
 );
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -51,6 +53,7 @@ app.use("/api/v1/rooms", roomsRoute);
 app.use("/api/v1/users", users);
 app.use("/api/v1/subscribers", subscribersRoute);
 app.use("/api/v1/send-email", contactRoute);
+app.use("/api/v1/dashboard", dashboardRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

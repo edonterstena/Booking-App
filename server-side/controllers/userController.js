@@ -1,3 +1,4 @@
+const Room = require("../models/Room");
 const User = require("../models/User");
 const createError = require("../utils/error");
 
@@ -22,17 +23,53 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+// const deleteUser = async (req, res, next) => {
+//   try {
+//     const id = req.params.id;
+//     const user = await User.findById({ _id: id });
+
+//     if (!user) {
+//       throw new Error("User doesnt exist!");
+//     }
+
+//     await User.deleteOne({ _id: id });
+//     res.status(200).json({ msg: "user deleted succesfully!" });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 const deleteUser = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await User.findById({ _id: id });
 
     if (!user) {
-      throw new Error("User doesnt exist!");
+      throw new Error("User doesn't exist!");
     }
 
+    // Delete the user
     await User.deleteOne({ _id: id });
-    res.status(200).json({ msg: "user deleted succesfully!" });
+
+    // Update related rooms
+    const rooms = await Room.find({ reservedByUsers: id });
+
+    for (const room of rooms) {
+      // Remove user from reservedByUsers array
+      room.reservedByUsers.pull(id);
+
+      // Update roomNumbers
+      for (const roomNumber of room.roomNumbers) {
+        if (roomNumber.reservedBy && roomNumber.reservedBy.toString() === id) {
+          roomNumber.unavailableDates = [];
+          roomNumber.reservedBy = null;
+        }
+      }
+
+      await room.save();
+    }
+
+    res.status(200).json({ msg: "User deleted successfully!" });
   } catch (err) {
     next(err);
   }
