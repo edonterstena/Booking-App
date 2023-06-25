@@ -4,11 +4,11 @@ const INITIAL_STATE = {
   city: undefined,
   dates: [],
   types: [],
-  guests: {
-    adult: undefined,
-    children: undefined,
-    // room: undefined,
-  },
+  // guests: {
+  //   adult: undefined,
+  //   children: undefined,
+  //   // room: undefined,
+  // },
 };
 
 export const SearchContext = createContext(INITIAL_STATE);

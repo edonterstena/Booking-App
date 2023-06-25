@@ -28,13 +28,13 @@ const List = () => {
       },
     ]
   );
-  const [guests, setGuests] = useState(
-    location.state?.guests || {
-      adult: 1,
-      children: 0,
-      room: 1,
-    }
-  );
+  // const [guests, setGuests] = useState(
+  //   location.state?.guests || {
+  //     adult: 1,
+  //     children: 0,
+  //     room: 1,
+  //   }
+  // );
 
   const [types, setTypes] = useState([]);
 
@@ -54,8 +54,8 @@ const List = () => {
     setTypes(selectedTypes); // Update the types state with the modified array
   };
 
-  const [min, setMin] = useState(undefined);
-  const [max, setMax] = useState(undefined);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
 
   const [openCalendar, setOpenCalendar] = useState(false);
 
@@ -65,6 +65,7 @@ const List = () => {
       setMax(dates[0].endDate);
     }
   }, [dates]);
+
   const { data, loading, error, reFetch } = useFetch(
     `http://localhost:8800/api/v1/hotels?${
       destination ? `destination=${destination}` : ""
@@ -72,9 +73,7 @@ const List = () => {
       Array.isArray(types) && types.length > 0
         ? `&types=${types.join(",")}`
         : ""
-    }${min !== undefined ? `&min=${min}` : ""}${
-      max !== undefined ? `&max=${max}` : ""
-    }`
+    }${min ? `&min=${min}` : ""}${max ? `&max=${max}` : ""}`
   );
 
   // const handleClick = () => {
@@ -99,8 +98,10 @@ const List = () => {
   const handleSearch = () => {
     dispatch({
       type: "NEW_SEARCH",
-      payload: { destination, dates, guests, types },
+      payload: { destination, dates, types },
     });
+    setMin(undefined); // Reset min state
+    setMax(undefined);
     reFetch();
     // navigate("/hotels", { state: { destination, dates, guests } });
   };
@@ -149,15 +150,8 @@ const List = () => {
               onChange={(e) => setDestination(e.target.value)}
               className="w-56 rounded p-1"
             ></input>
-            <label>Check-in date</label>
-            {/* <span className="w-56 rounded p-1 bg-white text-gray-400">
-              {dates && dates[0]
-                ? `${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
-                    dates[0].endDate,
-                    "MM/dd/yyyy"
-                  )}`
-                : "Dates are undefined"}
-            </span> */}
+            {/* <label>Check-in date</label>
+         
             <div>
               <span
                 onClick={() => setOpenCalendar(!openCalendar)}
@@ -183,18 +177,13 @@ const List = () => {
                     ranges={dates}
                     className="date bg-white border border-gray-300 rounded-md shadow-black shadow-lg  sm:text-[12px] absolute"
                   />
-                  {/* <div
-                    onClick={() => setOpenCalendar(!openCalendar)}
-                    className="bg-blue-700  w-screen p-3 rounded-lg  text-center text-white font-semibold"
-                  >
-                    OK
-                  </div> */}
+                 
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
           <hr className="border border-lg border-gray-800 w-full" />
-          <p className="text-xl">Guests-Options</p>
+          <h1 className="font-semibold flex self-center">Search by price: </h1>
           <div className="flex flex-col gap-4 sm:w-56">
             <div className="flex justify-between items-center  ">
               <label>Min price (per night)</label>
@@ -212,7 +201,7 @@ const List = () => {
                 className="w-12 rounded "
               />
             </div>
-            <div className="flex justify-between ">
+            {/* <div className="flex justify-between ">
               <label>Adult</label>
               <input
                 type="number"
@@ -228,15 +217,6 @@ const List = () => {
                 className="w-12 rounded text-center"
                 placeholder={guests?.children}
                 min={0}
-              />
-            </div>
-            {/* <div className="flex justify-between ">
-              <label>Room</label>
-              <input
-                type="number"
-                className="w-12 rounded text-center"
-                placeholder={guests?.room}
-                min={1}
               />
             </div> */}
           </div>

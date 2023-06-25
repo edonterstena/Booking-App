@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import featuredImg from "../../img/featured-img.jpg";
 
 import { GrCafeteria } from "react-icons/gr";
@@ -9,7 +9,19 @@ import { GiCoffeeCup } from "react-icons/gi";
 import { MdPets } from "react-icons/md";
 
 import { Link } from "react-router-dom";
+import { SearchContext } from "../../context/SearchContext";
 const SearchItem = ({ item }) => {
+  const [destination, setDestination] = useState("");
+
+  const { dispatch } = useContext(SearchContext);
+
+  const handleCheckAvailability = (city) => {
+    setDestination(city);
+    dispatch({
+      type: "NEW_SEARCH",
+      payload: { destination },
+    });
+  };
   return (
     <div className="lg:p-6 p-6 sm:p-16 border lg:grid lg:grid-cols-2  lg:justify-center  border-y-gray-300 rounded-lg font-PlusJakartaSans ">
       <div name="img" className=" lg:w-96 self-center">
@@ -53,7 +65,10 @@ const SearchItem = ({ item }) => {
           </div>
         </div>
         <Link to={`/hotels/${item._id}`}>
-          <button className="bg-[#5e90cb] text-white md:absolute md:top-2 md:right-2 p-2 rounded">
+          <button
+            onClick={() => handleCheckAvailability(item.city)}
+            className="bg-[#5e90cb] text-white md:absolute md:top-2 md:right-2 p-2 rounded"
+          >
             Check Availability
           </button>
         </Link>

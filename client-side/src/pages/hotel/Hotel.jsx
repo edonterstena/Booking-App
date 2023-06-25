@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import Header from "../../components/header/Header";
 import Navbar from "../../components/navbar/Navbar";
 import { MdLocationPin } from "react-icons/md";
+
+import { FaWindowClose } from "react-icons/fa";
 import Email from "../../components/emailFeature/Email";
 import Footer from "../../components/footer/Footer";
 import useFetch from "../../hooks/useFetch";
@@ -18,6 +20,7 @@ const Hotel = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [openModal, setOpenModal] = useState(false);
+  const [state, setState] = useState(false);
   const { data, loading, error } = useFetch(
     `http://localhost:8800/api/v1/hotels/find/${id}`
   );
@@ -27,15 +30,15 @@ const Hotel = () => {
 
   const navigate = useNavigate();
 
-  const MILISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-  function dayDifference(date1, date2) {
-    const timeDiff = Math.abs(date2?.getTime() - date1?.getTime());
-    const diffDays = Math.ceil(timeDiff / MILISECONDS_PER_DAY);
-    return diffDays;
-  }
+  // const MILISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  // function dayDifference(date1, date2) {
+  //   const timeDiff = Math.abs(date2?.getTime() - date1?.getTime());
+  //   const diffDays = Math.ceil(timeDiff / MILISECONDS_PER_DAY);
+  //   return diffDays;
+  // }
 
-  const days = dayDifference(dates[0]?.endDate, dates[0]?.startDate);
-  console.log(dates);
+  // const days = dayDifference(dates[0]?.endDate, dates[0]?.startDate);
+  // console.log(dates);
   // const photos = [
   //   {
   //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
@@ -61,7 +64,8 @@ const Hotel = () => {
     if (user) {
       setOpenModal(true);
     } else {
-      navigate("/login");
+      setState(true);
+      // navigate("/login");
     }
   };
   return (
@@ -170,17 +174,17 @@ const Hotel = () => {
                 className="flex flex-col gap-6 rounded-lg p-5 border border-[#5e90cb] shadow-black shadow-lg sm:w-[450px] lg:w-fit sm:self-center"
               >
                 <p className="text-2xl font-semibold">
-                  Perfect for a {days}-night stay!
+                  Perfect for a 9-night stay!
                 </p>
                 <p className="text-justify font-semibold">
                   Located in the real heart of {data.city}, this property has an
-                  excellent location score of 9.8!
+                  excellent location score of {data.averageRating}
                 </p>
                 <div className="flex gap-2 items-center">
                   <p className="font-semibold text-2xl">
-                    ${days * data.cheapestPrice}
+                    ${data.cheapestPrice}
                   </p>
-                  <p className="text-xl">({days} nights)</p>
+                  <p className="text-xl">(9 nights)</p>
                 </div>
                 <button
                   onClick={handleClick}
@@ -207,8 +211,52 @@ const Hotel = () => {
         <Reserve
           setOpen={setOpenModal}
           hotelId={id}
-          hotelPrice={days * data.cheapestPrice}
+          hotelPrice={data.cheapestPrice}
         />
+      )}
+
+      {state && (
+        <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div
+            className="fixed inset-0 w-full h-full bg-black opacity-40"
+            onClick={() => setState(false)}
+          ></div>
+          <div className="flex items-center min-h-screen px-4 py-8">
+            <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
+              <div className="mt-3">
+                <span
+                  onClick={() => setState(false)}
+                  className="absolute top-3 right-3 hover:cursor-pointer"
+                >
+                  <FaWindowClose />
+                </span>
+                <div className="mt-2 text-center">
+                  <h4 className="text-lg font-medium text-gray-800">
+                    You need to login in order to reserve or book.
+                  </h4>
+                  <p className="mt-2 text-[15px] leading-relaxed text-gray-500">
+                    If you you don't have an account please register before
+                    login.
+                  </p>
+                </div>
+              </div>
+              <div className="items-center gap-2 mt-3 sm:flex">
+                <button
+                  className="w-full mt-2 p-2.5 flex-1 text-white bg-indigo-600 rounded-md outline-none ring-offset-2 ring-indigo-600 focus:ring-2"
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </button>
+                <button
+                  className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                  onClick={() => navigate("/register")}
+                >
+                  Register
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
