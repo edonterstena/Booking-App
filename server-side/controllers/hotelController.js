@@ -63,7 +63,7 @@ async function createHotel(req, res) {
     console.error("Error creating hotel:", error);
     res
       .status(500)
-      .json({ error: "An error occurred while creating the hotel" });
+      .json({ error: "An error occurred while creating the hotel!" });
   }
 }
 
